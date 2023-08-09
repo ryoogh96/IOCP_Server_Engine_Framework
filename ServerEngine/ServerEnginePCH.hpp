@@ -29,7 +29,7 @@ using namespace std;
 #include <tchar.h>
 #include <DbgHelp.h>
 
-#define SERVER_IP		   L"127.0.0.1"
+#define SERVER_IP          L"127.0.0.1"
 #define DEFAULT_PORT       20000
 #define MAX_BUF_SIZE       1024
 

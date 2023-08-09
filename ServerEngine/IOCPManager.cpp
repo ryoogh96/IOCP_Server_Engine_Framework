@@ -76,20 +76,8 @@ namespace Engine
 				std::cout << "extendOverlapped->type == IO_TYPE::WRITE" << std::endl;
 				std::cout << "session->sendBuffer:" << session->getSendBuffer() << std::endl;
 
-				//// delete with static size array occur heap validate error
-				////delete session->getSendBuffer();
-
-				//WSABUF recvWSABuf;
-				//recvWSABuf.buf = reinterpret_cast<char*>(session->getRecvBuffer());
-				//recvWSABuf.len = MAX_BUF_SIZE;
-				//extendOverlapped->type = IO_TYPE::READ;
-				//if (::WSARecv(session->getSocket(), &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr) == SOCKET_ERROR)
-				//{
-				//	if (::WSAGetLastError() != WSA_IO_PENDING)
-				//	{
-				//		std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
-				//	}
-				//}
+				// delete with static size array occur heap validate error
+				// delete session->getSendBuffer();
 			}
 			else
 			{

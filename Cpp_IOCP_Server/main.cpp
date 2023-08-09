@@ -11,7 +11,7 @@ int main()
     {
         //serverSocketManager->broadcast();
         
-		Sleep(1000);
+        this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     delete serverSocketManager;
