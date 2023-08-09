@@ -46,7 +46,7 @@ namespace Engine
 		::WSACleanup();
 	}
 
-	void ClientSocketManager::send(char sendBuffer[])
+	void ClientSocketManager::Send(char sendBuffer[])
 	{
 		if (sizeof(sendBuffer) > 1024)
 		{
@@ -88,7 +88,7 @@ namespace Engine
 		//delete sendWSABuf;
 	}
 
-	void ClientSocketManager::recv()
+	void ClientSocketManager::Recv()
 	{
 		WSABUF wsaBuf;
 		wsaBuf.buf = m_recvBuffer;

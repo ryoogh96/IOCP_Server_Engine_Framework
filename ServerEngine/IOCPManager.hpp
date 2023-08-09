@@ -30,16 +30,18 @@ namespace Engine
 	class IOCPManager {
 
 	public:
-		void attachSocketToIoCompletionPort(const SOCKET& acceptSocket, const Session* session) const;
+		void AttachSocketToIoCompletionPort(const SOCKET& acceptSocket, const Session* session) const;
 
 	private:
+		const uint8 MAX_CLIENT_SOCKET_POOL = 1;
 		HANDLE m_hIOCP;
 		DWORD m_dwThreadCount;
 		std::vector<std::thread> m_workerThreads;
 
 	private:
-		void StartIoThreads();
-		void EndIoThreads();
+		void StartAcceptClientThreads();
+		void StartWorkerThreads();
+		void EndThreads();
 		void WorkerThreads();
 
 	public:

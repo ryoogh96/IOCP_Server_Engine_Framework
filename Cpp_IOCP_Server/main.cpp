@@ -3,13 +3,13 @@
 int main()
 {
     Engine::MiniDump dump;
-    dump.beginDump();
+    dump.BeginDump();
 
     Engine::ServerSocketManager* serverSocketManager = new Engine::ServerSocketManager();
 
     while (true)
     {
-        //serverSocketManager->broadcast();
+        //serverSocketManager->Broadcast();
         
         this_thread::sleep_for(std::chrono::seconds(1));
     }

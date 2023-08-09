@@ -6,11 +6,11 @@ namespace Engine
 {
 	ServerSocketManager::ServerSocketManager()
 	{
-		initialize();
-		for (uint8 i = 0; i < MAX_CLIENT_SOCKET_POOL; ++i)
-		{
-			createClientSocket();
-		}
+		Initialize();
+		//for (uint8 i = 0; i < MAX_CLIENT_SOCKET_POOL; ++i)
+		//{
+		//	acceptClientSocket();
+		//}
 	}
 
 	ServerSocketManager::~ServerSocketManager()
@@ -21,10 +21,10 @@ namespace Engine
 
 		for (const auto sessionMap : m_sessionMap)
 		{
-			const SOCKET socket = sessionMap.second->getSocket();
+			const SOCKET socket = sessionMap.second->GetSocket();
 			if (socket != INVALID_SOCKET)
 				::closesocket(socket);
-			sessionMap.second->setSocket(INVALID_SOCKET);
+			sessionMap.second->SetSocket(INVALID_SOCKET);
 
 			Session* session = sessionMap.second;
 			delete session;
@@ -36,7 +36,7 @@ namespace Engine
 		::WSACleanup();
 	}
 
-	void ServerSocketManager::initialize()
+	void ServerSocketManager::Initialize()
 	{
 		WSADATA wsaData;
 		const int wsaStartup = ::WSAStartup(MAKEWORD(2, 2), OUT & wsaData);
@@ -91,7 +91,7 @@ namespace Engine
 		m_iocpManager = new IOCPManager();
 	}
 
-	void ServerSocketManager::createClientSocket()
+	void ServerSocketManager::AcceptClientSocket()
 	{
 		const SOCKET clientSocket = ::WSASocketW(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 		if (clientSocket == INVALID_SOCKET)
@@ -102,33 +102,34 @@ namespace Engine
 		}
 
 		Session* session = new Session();
-		session->setSocket(clientSocket);
-		if (FALSE == ::AcceptEx(m_ListenSocket, session->getSocket(), m_Connector->getConnectorBuf(), 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, m_Connector->getBytesReceived(), m_Connector))
+		session->SetSocket(clientSocket);
+		if (FALSE == ::AcceptEx(m_ListenSocket, session->GetSocket(), m_Connector->GetConnectorBuf(), 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, m_Connector->GetBytesReceived(), m_Connector))
 		{
 			const int lastError = ::WSAGetLastError();
 			if (lastError != WSA_IO_PENDING)
 			{
 				std::cout << "ServerSocketManager::acceptClientConnect()" << std::endl;
 				std::cout << "::AcceptEx WSAGetLastError: " << lastError << std::endl;;
-				createClientSocket();
+				AcceptClientSocket();
 				return;
 			}
 		}
 
-		m_iocpManager->attachSocketToIoCompletionPort(session->getSocket(), session);
+		m_iocpManager->AttachSocketToIoCompletionPort(session->GetSocket(), session);
 
-		m_sessionMap.insert(make_pair(session->getSocket(), session));
+		m_sessionMap.insert(make_pair(session->GetSocket(), session));
 
-		std::cout << "session->socket: " << session->getSocket() << " has been connected" << std::endl;
+		// TODO: move msg to real connection logic
+		//std::cout << "session->socket: " << session->getSocket() << " has been connected" << std::endl;
 
 		WSABUF recvWSABuf;
 		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		recvWSABuf.buf = reinterpret_cast<char*>(session->getRecvBuffer());
+		recvWSABuf.buf = reinterpret_cast<char*>(session->GetRecvBuffer());
 		recvWSABuf.len = MAX_BUF_SIZE;
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		extendOverlapped->type = IO_TYPE::READ;
-		if (SOCKET_ERROR == ::WSARecv(session->getSocket(), &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr))
+		if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr))
 		{
 			const int lastError = ::WSAGetLastError();
 			if (lastError != WSA_IO_PENDING && lastError != WSAENOTCONN)
@@ -141,15 +142,15 @@ namespace Engine
 		}
 	}
 
-	void ServerSocketManager::broadcast()
+	void ServerSocketManager::Broadcast()
 	{
 		char msg[] = "message broadcasting...";
 		for (const auto sessionMap : m_sessionMap)
 		{
 			Session* session = sessionMap.second;
-			session->send(msg);
+			session->Send(msg);
 
-			std::cout << "session->socket: " << session->getSocket() << " broadcast " << "\"" << msg << "\"" << std::endl;
+			std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << msg << "\"" << std::endl;
 		}
 	}
 }

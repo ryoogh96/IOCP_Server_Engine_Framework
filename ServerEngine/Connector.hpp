@@ -9,8 +9,8 @@ namespace Engine
 	public:
 		Connector() {}
 		~Connector() {}
-		char* getConnectorBuf() { return m_connectorBuf; }
-		DWORD* getBytesReceived() { return m_bytesReceived; }
+		char* GetConnectorBuf() { return m_connectorBuf; }
+		DWORD* GetBytesReceived() { return m_bytesReceived; }
 
 	private:
 		char m_connectorBuf[MAX_BUF_SIZE] = { 0, };

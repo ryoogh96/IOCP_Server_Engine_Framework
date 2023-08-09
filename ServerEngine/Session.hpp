@@ -10,17 +10,17 @@ namespace Engine
 		Session() {};
 		~Session() {};
 
-		void send(const char* msg);
-		void recv();
+		void Send(const char* msg);
+		void Recv();
 
-		const SOCKET getSocket() const { return m_socket; }
-		void setSocket(const SOCKET socket) { m_socket = socket; }
+		const SOCKET GetSocket() const { return m_socket; }
+		void SetSocket(const SOCKET socket) { m_socket = socket; }
 
-		char* getSendBuffer() { return m_sendBuffer; }
-		void setSendBuffer(char buf[]) { memcpy(m_sendBuffer, buf, sizeof(buf)); }
+		char* GetSendBuffer() { return m_sendBuffer; }
+		void SetSendBuffer(char buf[]) { memcpy(m_sendBuffer, buf, sizeof(buf)); }
 
-		char* getRecvBuffer() { return m_recvBuffer; }
-		void setRecvBuffer(char buf[]) { memcpy(m_recvBuffer, buf, sizeof(buf)); }
+		char* GetRecvBuffer() { return m_recvBuffer; }
+		void SetRecvBuffer(char buf[]) { memcpy(m_recvBuffer, buf, sizeof(buf)); }
 
 	private:
 		SOCKET m_socket = INVALID_SOCKET;

@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-    void printLastError(DWORD dwError = GetLastError())
+    void PrintLastError(DWORD dwError = GetLastError())
     {
         TCHAR* lpOSMsg;
         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpOSMsg, 0, nullptr);
@@ -14,17 +14,17 @@ namespace Engine
 
     typedef BOOL(WINAPI* MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType, const PMINIDUMP_EXCEPTION_INFORMATION ExpcetionParam, const PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam, const PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
-    LONG WINAPI MiniDump::unHandledExceptionFilter(struct _EXCEPTION_POINTERS* exceptionInfo)
+    LONG WINAPI MiniDump::UnHandledExceptionFilter(struct _EXCEPTION_POINTERS* exceptionInfo)
     {
         HMODULE DLLHandle = LoadLibrary(_T("DBGHELP.DLL"));
         if (nullptr == DLLHandle) {
-            printLastError();
+            PrintLastError();
             return EXCEPTION_CONTINUE_SEARCH;
         }
 
         MINIDUMPWRITEDUMP dump = (MINIDUMPWRITEDUMP)GetProcAddress(DLLHandle, "MiniDumpWriteDump");
         if (nullptr == dump) {
-            printLastError();
+            PrintLastError();
             return EXCEPTION_CONTINUE_SEARCH;
         }
 
@@ -39,7 +39,7 @@ namespace Engine
 
         if (INVALID_HANDLE_VALUE == fileHandle)
         {
-            printLastError();
+            PrintLastError();
             return EXCEPTION_CONTINUE_SEARCH;
         }
 
@@ -55,12 +55,12 @@ namespace Engine
         return (TRUE == bSuccess) ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH;
     }
 
-    BOOL MiniDump::beginDump()
+    BOOL MiniDump::BeginDump()
     {
         SetErrorMode(SEM_FAILCRITICALERRORS);
 
         LPTOP_LEVEL_EXCEPTION_FILTER previousExceptionFilter = nullptr;
-        previousExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)unHandledExceptionFilter);
+        previousExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)UnHandledExceptionFilter);
 
         return TRUE;
     }

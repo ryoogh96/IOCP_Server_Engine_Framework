@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-	void Session::send(const char* msg)
+	void Session::Send(const char* msg)
 	{
 		memcpy(m_sendBuffer, msg, strlen(msg));
 
@@ -22,7 +22,7 @@ namespace Engine
 		}
 	}
 
-	void Session::recv()
+	void Session::Recv()
 	{
 		WSABUF recvWSABuf;
 		recvWSABuf.buf = m_recvBuffer;

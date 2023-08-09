@@ -7,7 +7,7 @@
 int main()
 {
 	Engine::MiniDump minidump;
-	minidump.beginDump();
+	minidump.BeginDump();
 
 	Engine::ClientSocketManager*clientSocketManager = new Engine::ClientSocketManager();
 
@@ -15,13 +15,13 @@ int main()
 	char recvBuffer[1024] = "client msg";
 	while (true)
 	{
-		clientSocketManager->recv();
+		clientSocketManager->Recv();
 
 		this_thread::sleep_for(std::chrono::seconds(1));
 
-		clientSocketManager->send(clientSocketManager->getRecvBuffer());
+		clientSocketManager->Send(clientSocketManager->GetRecvBuffer());
 
-		clientSocketManager->setRecvBuffer(recvBuffer);
+		clientSocketManager->SetRecvBuffer(recvBuffer);
 	}
 
 	delete clientSocketManager;

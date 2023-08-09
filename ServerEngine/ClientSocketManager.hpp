@@ -7,11 +7,11 @@ namespace Engine
 	public:
 		ClientSocketManager();
 		~ClientSocketManager();
-		void send(char sendBuffer[]);
-		void recv();
+		void Send(char sendBuffer[]);
+		void Recv();
 
-		char* getRecvBuffer() { return m_recvBuffer; }
-		void setRecvBuffer(char buf[]) { memcpy(m_recvBuffer, buf, sizeof(buf)); }
+		char* GetRecvBuffer() { return m_recvBuffer; }
+		void SetRecvBuffer(char buf[]) { memcpy(m_recvBuffer, buf, sizeof(buf)); }
 
 	private:
 		SOCKET m_socket;
