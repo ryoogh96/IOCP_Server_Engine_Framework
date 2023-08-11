@@ -24,22 +24,35 @@ namespace Engine
 			hEvent = nullptr;
 		}
 
-		IO_TYPE	type = IO_TYPE::NONE;
+		IO_TYPE	m_type = IO_TYPE::NONE;
+		char m_acceptBuf[512] = { 0, };
+		SOCKET m_acceptSocket = INVALID_SOCKET;
 	};
 
 	class IOCPManager {
 
 	public:
-		void AttachSocketToIoCompletionPort(const SOCKET& acceptSocket, const Session* session) const;
+		const void setIOCPHandle(const HANDLE handle) { m_hIOCP = handle; }
+		const HANDLE GetIOCPHandle() const { return m_hIOCP; }
+		const void setAcceptClientThreadFunc(std::function<void()> func) { m_AcceptClientThreadFunc = func; }
+		const std::function<void()> GetAcceptClientThreadFunc() const { return m_AcceptClientThreadFunc; }
+		const std::map<SOCKET, Session*> GetSessionMap() const { return m_SessionMap; }
+
+		void AttachListenSocketToIOCP(const SOCKET listenSocket) const;
+		void AttachAcceptSocketToIOCP(const SOCKET acceptSocket) const;
+		void StartAcceptClientThreads();
 
 	private:
-		const uint8 MAX_CLIENT_SOCKET_POOL = 1;
+		uint8 m_RemainAcceptSocketPool = 1;
+		const uint8 MAX_ACCPET_SOCKET_POOL = 1;
 		HANDLE m_hIOCP;
 		DWORD m_dwThreadCount;
-		std::vector<std::thread> m_workerThreads;
+		std::vector<std::thread> m_AcceptClientThreads;
+		std::vector<std::thread> m_WorkerThreads;
+		std::function<void()> m_AcceptClientThreadFunc;
+		std::map<SOCKET, Session*> m_SessionMap;
 
 	private:
-		void StartAcceptClientThreads();
 		void StartWorkerThreads();
 		void EndThreads();
 		void WorkerThreads();

@@ -10,14 +10,12 @@ namespace Engine
 		ServerSocketManager();
 		~ServerSocketManager();
 
-		void AcceptClientSocket();
 		void Broadcast();
 
 	private:
-		SOCKET m_ListenSocket = INVALID_SOCKET;
+		Listener* m_Listener = nullptr;
 		Connector* m_Connector = nullptr;
 		IOCPManager* m_iocpManager = nullptr;
-		map<SOCKET, Session*> m_sessionMap;
 
 		void Initialize();
 	};

@@ -14,7 +14,7 @@ namespace Engine
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->type = IO_TYPE::WRITE;
+		extendOverlapped->m_type = IO_TYPE::WRITE;
 		if (::WSASend(m_socket, &sendWSABuf, 1, &recvLen, flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr) == SOCKET_ERROR)
 		{
 			std::cout << "Session::send()" << std::endl;
@@ -30,7 +30,7 @@ namespace Engine
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->type = IO_TYPE::READ;
+		extendOverlapped->m_type = IO_TYPE::READ;
 		::WSARecv(m_socket, &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr);
 	}
 }

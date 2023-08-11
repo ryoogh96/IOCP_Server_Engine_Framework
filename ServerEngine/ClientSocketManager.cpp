@@ -60,7 +60,7 @@ namespace Engine
 		DWORD numOfBytes = sizeof(sendBuffer);
 		DWORD flags = 0;
 		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->type = IO_TYPE::WRITE;
+		extendOverlapped->m_type = IO_TYPE::WRITE;
 		WSABUF wsaBuf;
 		wsaBuf.buf = (CHAR*)sendBuffer;
 		wsaBuf.len = sizeof(sendBuffer);

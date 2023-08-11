@@ -42,6 +42,9 @@
     <ClInclude Include="Connector.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Listener.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniDump.cpp">
@@ -63,6 +66,9 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Session.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
