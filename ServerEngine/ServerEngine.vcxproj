@@ -171,12 +171,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Accepter.hpp" />
     <ClInclude Include="ClientSocketManager.hpp" />
     <ClInclude Include="Connector.hpp" />
+    <ClInclude Include="IOCPEvent.hpp" />
     <ClInclude Include="IOCPManager.hpp" />
     <ClInclude Include="Listener.hpp" />
     <ClInclude Include="MiniDump.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="RingBuffer.hpp" />
     <ClInclude Include="ServerEngineMacro.hpp" />
     <ClInclude Include="ServerEnginePCH.hpp" />
     <ClInclude Include="ServerEngineTypes.hpp" />
@@ -194,6 +197,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RingBuffer.cpp" />
     <ClCompile Include="ServerEnginePCH.cpp" />
     <ClCompile Include="ServerSocketManager.cpp" />
     <ClCompile Include="Session.cpp" />

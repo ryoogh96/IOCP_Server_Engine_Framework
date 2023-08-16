@@ -15,13 +15,13 @@ int main()
 	char recvBuffer[1024] = "client msg";
 	while (true)
 	{
+		clientSocketManager->Send(recvBuffer);
+
 		clientSocketManager->Recv();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
-		clientSocketManager->Send(clientSocketManager->GetRecvBuffer());
-
-		clientSocketManager->SetRecvBuffer(recvBuffer);
+		//clientSocketManager->SetRecvBuffer(recvBuffer);
 	}
 
 	delete clientSocketManager;

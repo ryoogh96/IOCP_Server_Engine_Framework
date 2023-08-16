@@ -10,6 +10,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{3af5cae0-ec2c-40be-aa7e-e4147021122f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{4ed4ebbd-b50b-4c58-9fb3-1ce38fe94162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniDump.hpp">
@@ -45,6 +48,15 @@
     <ClInclude Include="Listener.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="RingBuffer.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Accepter.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPEvent.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniDump.cpp">
@@ -70,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="Listener.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="RingBuffer.cpp">
+      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

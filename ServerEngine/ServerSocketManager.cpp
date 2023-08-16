@@ -22,6 +22,7 @@ namespace Engine
 			delete session;
 		}
 
+		delete m_Listener;
 		delete m_Connector;
 		delete m_iocpManager;
 
@@ -82,7 +83,7 @@ namespace Engine
 		}
 
 		m_iocpManager = new IOCPManager();
-		m_iocpManager->AttachListenSocketToIOCP(m_Listener->getListenSocket());
+		m_iocpManager->AttachSocketToIOCP(m_Listener->getListenSocket());
 		m_iocpManager->setAcceptClientThreadFunc(std::bind(&Listener::CreateAcceptSocket, m_Listener, m_iocpManager->GetIOCPHandle(), m_iocpManager->GetSessionMap()));
 		m_iocpManager->StartAcceptClientThreads();
 	}

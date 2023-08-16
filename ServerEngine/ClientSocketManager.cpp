@@ -6,6 +6,23 @@ namespace Engine
 {
 	ClientSocketManager::ClientSocketManager()
 	{
+		Initialize();
+	}
+
+	ClientSocketManager::~ClientSocketManager()
+	{
+		if (m_socket != INVALID_SOCKET)
+			::closesocket(m_socket);
+		m_socket = INVALID_SOCKET;
+
+		::WSACleanup();
+
+		delete m_iocpManager;
+		delete m_Connector;
+	}
+
+	void ClientSocketManager::Initialize()
+	{
 		WSADATA wsaData;
 		const int wsaStartup = ::WSAStartup(MAKEWORD(2, 2), OUT & wsaData);
 		if (wsaStartup != 0)
@@ -23,27 +40,53 @@ namespace Engine
 			ASSERT_CRASH(m_socket != INVALID_SOCKET);
 		}
 
-		SOCKADDR_IN serverAddr;
-		ZeroMemory(&serverAddr, sizeof(serverAddr));
+		SOCKADDR_IN sockAddr;
+		ZeroMemory(&sockAddr, sizeof(sockAddr));
+		sockAddr.sin_family = AF_INET;
+		// use remain any port
+		sockAddr.sin_port = ::htons(0);
+		sockAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);
 
-		std::string msg;
-		std::string* socketBuf = new std::string;
+		const int bind = ::bind(m_socket, reinterpret_cast<const SOCKADDR*>(&sockAddr), sizeof(sockAddr)) != SOCKET_ERROR;
+		if (bind == SOCKET_ERROR)
+		{
+			std::cout << "ServerSocketManager::ServerSocketManager()" << std::endl;
+			std::cout << "::bind WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+			ASSERT_CRASH(bind != SOCKET_ERROR);
+		}
+
+		m_iocpManager = new IOCPManager();
+		m_iocpManager->AttachSocketToIOCP(m_socket);
+
+		DWORD byte = 0;
+		GUID connectExGUID = WSAID_CONNECTEX;
+		LPFN_CONNECTEX fpConnectEx;
+		if (SOCKET_ERROR == ::WSAIoctl(m_socket, SIO_GET_EXTENSION_FUNCTION_POINTER, &connectExGUID, sizeof(connectExGUID), &fpConnectEx, sizeof(fpConnectEx), &byte, nullptr, nullptr))
+		{
+			const int lastError = ::WSAGetLastError();
+			if (lastError != WSA_IO_PENDING)
+			{
+				std::cout << "ClientSocketManager::ClientSocketManager()" << std::endl;
+				std::cout << "::WSAIoctl WSAGetLastError: " << lastError << std::endl;;
+				return;
+			}
+		}
+
 		IN_ADDR address;
 		::InetPtonW(AF_INET, SERVER_IP, &address);
-		serverAddr.sin_family = AF_INET;
-		serverAddr.sin_port = ::htons(DEFAULT_PORT);
-		serverAddr.sin_addr = address;
-		DWORD numOfBytes = 0;
-		ASSERT_CRASH(::WSAConnect(m_socket, (sockaddr*)&serverAddr, sizeof(sockaddr), nullptr, nullptr, nullptr, nullptr) != SOCKET_ERROR);
-	}
-
-	ClientSocketManager::~ClientSocketManager()
-	{
-		if (m_socket != INVALID_SOCKET)
-			::closesocket(m_socket);
-		m_socket = INVALID_SOCKET;
-
-		::WSACleanup();
+		sockAddr.sin_port = ::htons(DEFAULT_PORT);
+		sockAddr.sin_addr = address;
+		m_Connector = new Connector();
+		if (FALSE == fpConnectEx(m_socket, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR), m_Connector->GetConnectorBuf(), 0, &byte, m_Connector))
+		{
+			const int lastError = ::WSAGetLastError();
+			if (lastError != WSA_IO_PENDING)
+			{
+				std::cout << "ClientSocketManager::ClientSocketManager()" << std::endl;
+				std::cout << "fpConnectEx WSAGetLastError: " << lastError << std::endl;;
+				//return;
+			}
+		}
 	}
 
 	void ClientSocketManager::Send(char sendBuffer[])
@@ -54,20 +97,17 @@ namespace Engine
 			return;
 		}
 
-		//WSABUF* sendWSABuf = new WSABUF();
-		//memcpy(sendWSABuf->buf, sendBuffer, sizeof(sendBuffer));
-		//sendWSABuf->len = sizeof(sendBuffer);
 		DWORD numOfBytes = sizeof(sendBuffer);
 		DWORD flags = 0;
-		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->m_type = IO_TYPE::WRITE;
+		IOCPEvent* iocpEvent = new IOCPEvent();
+		iocpEvent->SetIOType(IO_TYPE::CLIENT_SEND);
 		WSABUF wsaBuf;
-		wsaBuf.buf = (CHAR*)sendBuffer;
-		wsaBuf.len = sizeof(sendBuffer);
+		wsaBuf.buf = reinterpret_cast<char*>(sendBuffer);
+		wsaBuf.len = strlen(sendBuffer);
 
 		while (true)
 		{
-			if (::WSASend(m_socket, &wsaBuf, 1, &numOfBytes, flags, (LPWSAOVERLAPPED)&extendOverlapped, nullptr) != SOCKET_ERROR)
+			if (::WSASend(m_socket, &wsaBuf, 1, &numOfBytes, flags, iocpEvent, nullptr) != SOCKET_ERROR)
 			{
 				// Success
 				return;
@@ -95,9 +135,10 @@ namespace Engine
 		wsaBuf.len = MAX_BUF_SIZE;
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		WSAOVERLAPPED overlapped = {};
+		IOCPEvent* iocpEvent = new IOCPEvent();
+		iocpEvent->SetIOType(IO_TYPE::CLIENT_RECV);
 
-		const int wsaResult = ::WSARecv(m_socket, &wsaBuf, 1, &recvLen, &flags, &overlapped, nullptr);
+		const int wsaResult = ::WSARecv(m_socket, &wsaBuf, 1, &recvLen, &flags, iocpEvent, nullptr);
 		if (wsaResult == SOCKET_ERROR)
 		{
 			if (::WSAGetLastError() != WSA_IO_PENDING)

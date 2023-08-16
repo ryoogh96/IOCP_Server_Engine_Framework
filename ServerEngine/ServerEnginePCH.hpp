@@ -37,6 +37,9 @@
 
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
+#include "IOCPEvent.hpp"
+#include "RingBuffer.hpp"
+#include "Accepter.hpp"
 #include "Session.hpp"
 #include "Listener.hpp"
 #include "Connector.hpp"

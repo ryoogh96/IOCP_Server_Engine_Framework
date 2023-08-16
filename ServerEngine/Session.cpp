@@ -6,31 +6,46 @@ namespace Engine
 {
 	void Session::Send(const char* msg)
 	{
-		memcpy(m_sendBuffer, msg, strlen(msg));
+		const SOCKET socket = GetSocket();
 
+		char* sendBuffer = GetSendBuffer();
+		memcpy(sendBuffer, msg, strlen(msg));
+		
 		WSABUF sendWSABuf;
-		sendWSABuf.buf = m_sendBuffer;
-		sendWSABuf.len = sizeof(m_sendBuffer);
+		sendWSABuf.buf = sendBuffer;
+		sendWSABuf.len = strlen(sendBuffer);
+		
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->m_type = IO_TYPE::WRITE;
-		if (::WSASend(m_socket, &sendWSABuf, 1, &recvLen, flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr) == SOCKET_ERROR)
+		
+		IOCPEvent* iocpEvent = new IOCPEvent();
+		iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
+		if (::WSASend(socket, &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
 		{
-			std::cout << "Session::send()" << std::endl;
+			std::cout << "Session::Send()" << std::endl;
 			std::cout << "::WSASend WSAGetLastError: " << ::WSAGetLastError() << std::endl;
 		}
 	}
 
 	void Session::Recv()
 	{
+		const SOCKET socket = GetSocket();
+		
+		char* recvBuffer = GetRecvBuffer();
+		
 		WSABUF recvWSABuf;
-		recvWSABuf.buf = m_recvBuffer;
+		recvWSABuf.buf = recvBuffer;
 		recvWSABuf.len = MAX_BUF_SIZE;
+		
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->m_type = IO_TYPE::READ;
-		::WSARecv(m_socket, &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr);
+		
+		IOCPEvent* iocpEvent = new IOCPEvent();
+		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+		if (::WSARecv(socket, &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr))
+		{
+			std::cout << "Session::Recv()" << std::endl;
+			std::cout << "::WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+		}
 	}
 }

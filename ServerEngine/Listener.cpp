@@ -24,10 +24,9 @@ namespace Engine
 
 
 		DWORD bytesReceived = 0;
-		ExtendOverlapped* extendOverlapped = new ExtendOverlapped();
-		extendOverlapped->m_type = IO_TYPE::ACCEPT;
-		extendOverlapped->m_acceptSocket = acceptSocket;
-		if (FALSE == ::AcceptEx(m_ListenSocket, acceptSocket, &extendOverlapped->m_acceptBuf, 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytesReceived, reinterpret_cast<const LPOVERLAPPED>(extendOverlapped)))
+		Accepter* accepter = new Accepter();
+		accepter->SetSocket(acceptSocket);
+		if (FALSE == ::AcceptEx(m_ListenSocket, acceptSocket, accepter->GetAccepterBuf(), 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytesReceived, accepter))
 		{
 			const int lastError = ::WSAGetLastError();
 			if (lastError != WSA_IO_PENDING)

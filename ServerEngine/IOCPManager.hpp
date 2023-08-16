@@ -4,31 +4,6 @@
 
 namespace Engine
 {
-	enum class IO_TYPE
-	{
-		NONE,
-		READ,
-		WRITE,
-		ACCEPT,
-		CONNECT,
-	};
-
-	class ExtendOverlapped : WSAOVERLAPPED {
-	public:
-		ExtendOverlapped()
-		{
-			Internal = 0;
-			InternalHigh = 0;
-			Offset = 0;
-			OffsetHigh = 0;
-			hEvent = nullptr;
-		}
-
-		IO_TYPE	m_type = IO_TYPE::NONE;
-		char m_acceptBuf[512] = { 0, };
-		SOCKET m_acceptSocket = INVALID_SOCKET;
-	};
-
 	class IOCPManager {
 
 	public:
@@ -38,8 +13,7 @@ namespace Engine
 		const std::function<void()> GetAcceptClientThreadFunc() const { return m_AcceptClientThreadFunc; }
 		const std::map<SOCKET, Session*> GetSessionMap() const { return m_SessionMap; }
 
-		void AttachListenSocketToIOCP(const SOCKET listenSocket) const;
-		void AttachAcceptSocketToIOCP(const SOCKET acceptSocket) const;
+		void AttachSocketToIOCP(const SOCKET socket) const;
 		void StartAcceptClientThreads();
 
 	private:
@@ -56,6 +30,10 @@ namespace Engine
 		void StartWorkerThreads();
 		void EndThreads();
 		void WorkerThreads();
+
+		void OnServerAccept(IOCPEvent* iocpEvent);
+		void OnClientConnect(IOCPEvent* iocpEvent);
+		void OnClientDisconnect(IOCPEvent* iocpEvent);
 
 	public:
 		IOCPManager();

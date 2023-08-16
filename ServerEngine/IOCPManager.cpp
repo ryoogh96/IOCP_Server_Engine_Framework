@@ -9,6 +9,7 @@ namespace Engine
 		m_hIOCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0);
 		ASSERT_CRASH(m_hIOCP != INVALID_HANDLE_VALUE);
 		m_dwThreadCount = std::thread::hardware_concurrency();
+		std::cout << "available total threads num: " << m_dwThreadCount << std::endl;
 		StartWorkerThreads();
 	}
 
@@ -18,22 +19,83 @@ namespace Engine
 		EndThreads();
 	}
 
-	void IOCPManager::AttachListenSocketToIOCP(const SOCKET listenSocket) const
+	void IOCPManager::AttachSocketToIOCP(const SOCKET socket) const
 	{
-		if (::CreateIoCompletionPort(reinterpret_cast<const HANDLE>(listenSocket), m_hIOCP, 0, 0) == INVALID_HANDLE_VALUE)
+		if (::CreateIoCompletionPort(reinterpret_cast<const HANDLE>(socket), m_hIOCP, 0, 0) == INVALID_HANDLE_VALUE)
 		{
-			std::cout << "IOCPManager::AttachListenSocketToIOCP()" << std::endl;
+			std::cout << "IOCPManager::AttachSocketToIOCP()" << std::endl;
 			std::cout << "CreateIoCompletionPort WSAGetLastError: " << ::WSAGetLastError() << std::endl;
 		}
 	}
 
-	void IOCPManager::AttachAcceptSocketToIOCP(const SOCKET acceptSocket) const
+	void IOCPManager::OnServerAccept(IOCPEvent* iocpEvent)
 	{
-		if (::CreateIoCompletionPort(reinterpret_cast<const HANDLE>(acceptSocket), m_hIOCP, 0, 0) == INVALID_HANDLE_VALUE)
+		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_ACCEPT" << std::endl;
+
+		if (m_RemainAcceptSocketPool <= 0)
 		{
-			std::cout << "Listener::AttachAcceptClientSocketToIOCP()" << std::endl;
-			std::cout << "CreateIoCompletionPort WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+			std::cout << "socket pool already full" << std::endl;
+			return;
 		}
+
+		Session* session = new Session();
+		session->SetSocket(iocpEvent->GetSocket());
+		AttachSocketToIOCP(session->GetSocket());
+
+		m_SessionMap.insert(std::make_pair(session->GetSocket(), session));
+
+		std::cout << "session->socket: " << session->GetSocket() << " has been created" << std::endl;
+
+		WSABUF recvWSABuf;
+		recvWSABuf.buf = reinterpret_cast<char*>(session->GetRecvBuffer());
+		recvWSABuf.len = MAX_BUF_SIZE;
+		DWORD recvLen = 0;
+		DWORD flags = 0;
+		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+		if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr))
+		{
+			const int lastError = ::WSAGetLastError();
+			if (lastError != WSA_IO_PENDING && lastError != WSAENOTCONN)
+			{
+				std::cout << "IOCPManager::OnServerAccept()" << std::endl;
+				std::cout << "::WSARecv WSAGetLastError: " << lastError << std::endl;
+				ASSERT_CRASH(lastError == WSA_IO_PENDING || lastError == WSAENOTCONN);
+			}
+		}
+
+		m_RemainAcceptSocketPool--;
+	}
+
+	void IOCPManager::OnClientConnect(IOCPEvent* iocpEvent)
+	{
+		std::cout << "session->socket: " << iocpEvent->GetSocket() << " has been connected" << std::endl;
+
+		if (WAIT_TIMEOUT == ::WaitForSingleObject(reinterpret_cast<HANDLE>(iocpEvent->GetSocket()), 3000))
+		{
+			const int lastError = ::WSAGetLastError();
+			std::cout << "IOCPManager::OnClientConnect()" << std::endl;
+			std::cout << "::WaitForSingleObject WSAGetLastError: " << lastError << std::endl;
+			ASSERT_CRASH(lastError != WAIT_TIMEOUT);
+		}
+	}
+
+	void IOCPManager::OnClientDisconnect(IOCPEvent* iocpEvent)
+	{
+		Session* session = m_SessionMap.find(iocpEvent->GetSocket())->second;
+		m_SessionMap.erase(iocpEvent->GetSocket());
+
+		std::cout << "session->socket: " << session->GetSocket() << " has been disconnected" << std::endl;
+		
+		::closesocket(session->GetSocket());
+		session->SetSocket(INVALID_SOCKET);
+
+		delete session;
+		
+		// FIXME: why abort() call error occur?
+		//m_AcceptClientThreads.erase(m_AcceptClientThreads.begin());
+		//m_AcceptClientThreads.pop_back();
+		m_AcceptClientThreads.emplace_back([this]() { this->GetAcceptClientThreadFunc()(); });
+		m_RemainAcceptSocketPool++;
 	}
 
 
@@ -43,109 +105,73 @@ namespace Engine
 		{
 			DWORD bytesTransferred = 0;
 			Session* session = nullptr;
-			ExtendOverlapped* extendOverlapped = nullptr;
-			const BOOL status = ::GetQueuedCompletionStatus(m_hIOCP, &bytesTransferred, (ULONG_PTR*)&session, (LPOVERLAPPED*)&extendOverlapped, INFINITE);
-
-			if (status == FALSE || bytesTransferred == 0)
-			{
-				if (extendOverlapped->m_type == IO_TYPE::ACCEPT)
-				{
-					std::cout << "extendOverlapped->type == IO_TYPE::ACCEPT" << std::endl;
-
-					if (m_RemainAcceptSocketPool <= 0)
-					{
-						std::cout << "socket pool already full" << std::endl;
-						continue;
-					}
-
-					Session* session = new Session();
-					session->SetSocket(extendOverlapped->m_acceptSocket);
-					AttachAcceptSocketToIOCP(session->GetSocket());
-
-					m_SessionMap.insert(std::make_pair(session->GetSocket(), session));
-
-					std::cout << "session->socket: " << session->GetSocket() << " has been created" << std::endl;
-
-					WSABUF recvWSABuf;
-					recvWSABuf.buf = reinterpret_cast<char*>(session->GetRecvBuffer());
-					recvWSABuf.len = MAX_BUF_SIZE;
-					DWORD recvLen = 0;
-					DWORD flags = 0;
-					extendOverlapped->m_type = IO_TYPE::READ;
-					if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr))
-					{
-						const int lastError = ::WSAGetLastError();
-						if (lastError != WSA_IO_PENDING && lastError != WSAENOTCONN)
-						{
-							std::cout << "Listener::CreateAcceptSocket()" << std::endl;
-							std::cout << "::WSARecv WSAGetLastError: " << lastError << std::endl;
-							ASSERT_CRASH(lastError == WSA_IO_PENDING || lastError == WSAENOTCONN);
-							continue;
-						}
-					}
-
-					m_RemainAcceptSocketPool--;
-					continue;
-				}
-
-				if (session == nullptr && extendOverlapped->m_acceptSocket == INVALID_SOCKET)
-				{
-					continue;
-				}
-
-				session = m_SessionMap.find(extendOverlapped->m_acceptSocket)->second;
-				m_SessionMap.erase(extendOverlapped->m_acceptSocket);
-
-				std::cout << "session->socket: " << session->GetSocket() << " has been disconnected" << std::endl;
-				extendOverlapped->m_type = IO_TYPE::ACCEPT;
-				::closesocket(session->GetSocket());
-				session->SetSocket(INVALID_SOCKET);
-				delete session;
-				// FIXME: why abort() call error occur?
-				//m_AcceptClientThreads.erase(m_AcceptClientThreads.begin());
-				//m_AcceptClientThreads.pop_back();
-				m_AcceptClientThreads.emplace_back([this]() { this->GetAcceptClientThreadFunc()(); });
-				m_RemainAcceptSocketPool++;
-				
-				continue;
-			}
+			IOCPEvent* iocpEvent = nullptr;
+			const BOOL status = ::GetQueuedCompletionStatus(m_hIOCP, &bytesTransferred, reinterpret_cast<ULONG_PTR*>(&session), reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), INFINITE);
 
 			DWORD recvLen = 0;
 			DWORD flags = 0;
-
-			if (extendOverlapped->m_type == IO_TYPE::READ)
+			if (status == FALSE || bytesTransferred == 0)
 			{
-				std::cout << "extendOverlapped->type == IO_TYPE::READ" << std::endl;
-				std::cout << "session" << session << std::endl;
-				//std::cout << "session->GetSocket()" << session->GetSocket() << std::endl;
-				//std::cout << "session->recvBuffer:" << session->GetSendBuffer() << std::endl;
-				// echo
-				//WSABUF sendWSABuf;
-				//sendWSABuf.buf = reinterpret_cast<char*>(session->GetSendBuffer());
-				//sendWSABuf.len = bytesTransferred;
-				//extendOverlapped->type = IO_TYPE::WRITE;
-				//::WSASend(session->getSocket(), &sendWSABuf, 1, &recvLen, flags, (LPWSAOVERLAPPED)&extendOverlapped, nullptr);
-
-				WSABUF recvWSABuf;
-				recvWSABuf.buf = reinterpret_cast<char*>(session->GetSendBuffer());
-				recvWSABuf.len = MAX_BUF_SIZE;
-				extendOverlapped->m_type = IO_TYPE::READ;
-				if (::WSARecv(session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, (LPWSAOVERLAPPED)extendOverlapped, nullptr) == SOCKET_ERROR)
+				if (iocpEvent->GetIOType() == IO_TYPE::SERVER_ACCEPT)
 				{
-					std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+					OnServerAccept(iocpEvent);
+				}
+				else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_CONNECT)
+				{
+					OnClientConnect(iocpEvent);
+				}
+				else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_DISCONNECT)
+				{
+					OnClientDisconnect(iocpEvent);
+				}
+				else
+				{
+					OnClientDisconnect(iocpEvent);
 				}
 			}
-			else if (extendOverlapped->m_type == IO_TYPE::WRITE)
+			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_SEND)
 			{
-				std::cout << "extendOverlapped->type == IO_TYPE::WRITE" << std::endl;
+				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_SEND" << std::endl;
 				std::cout << "session->sendBuffer:" << session->GetSendBuffer() << std::endl;
 
 				// delete with static size array occur heap validate error
 				// delete session->getSendBuffer();
 			}
+			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_RECV)
+			{
+				Session* _session = m_SessionMap.find(iocpEvent->GetSocket())->second;
+
+				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_RECV" << std::endl;
+				std::cout << "session" << _session << std::endl;
+				std::cout << "session->GetSocket(): " << _session->GetSocket() << std::endl;
+				std::cout << "session->recvBuffer:" << _session->GetSendBuffer() << std::endl;
+				// echo
+				//WSABUF sendWSABuf;
+				//sendWSABuf.buf = reinterpret_cast<char*>(session->GetSendBuffer());
+				//sendWSABuf.len = bytesTransferred;
+				//iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
+				//::WSASend(session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr);
+
+				WSABUF recvWSABuf;
+				recvWSABuf.buf = reinterpret_cast<char*>(_session->GetSendBuffer());
+				recvWSABuf.len = MAX_BUF_SIZE;
+				iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+				if (::WSARecv(_session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr) == SOCKET_ERROR)
+				{
+					std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+				}
+			}
+			else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_SEND)
+			{
+				std::cout << "iocpEvent->GetIOType() == IO_TYPE::CLIENT_SEND" << std::endl;
+			}
+			else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_RECV)
+			{
+				std::cout << "iocpEvent->GetIOType() == IO_TYPE::CLIENT_RECV" << std::endl;
+			}
 			else
 			{
-				printf("unknown extendOverlapped->type: %d\n", extendOverlapped->m_type);
+				printf("unknown extendOverlapped->type: %d\n", iocpEvent->GetIOType());
 			}
 		}
 	}
@@ -164,8 +190,6 @@ namespace Engine
 		{
 			m_WorkerThreads.emplace_back([this]() { this->WorkerThreads(); });
 		}
-
-		std:: cout << "available threads num: " << m_dwThreadCount - MAX_ACCPET_SOCKET_POOL << std::endl;
 	}
 
 	void IOCPManager::EndThreads()
