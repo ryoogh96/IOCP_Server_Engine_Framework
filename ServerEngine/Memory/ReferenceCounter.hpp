@@ -32,7 +32,7 @@ namespace Engine
 	class TSharedPtr
 	{
 	public:
-		TsharedPtr() {}
+		TSharedPtr() {}
 		TSharedPtr(T* ptr) { Set(ptr); }
 
 		TSharedPtr(const TSharedPtr& rhs) { Set(rhs.m_ptr); }

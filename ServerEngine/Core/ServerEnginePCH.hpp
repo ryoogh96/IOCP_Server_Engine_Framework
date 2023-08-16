@@ -38,13 +38,18 @@
 
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
-#include "IOCPEvent.hpp"
-#include "RingBuffer.hpp"
-#include "Accepter.hpp"
-#include "Session.hpp"
-#include "Listener.hpp"
-#include "Connector.hpp"
-#include "IOCPManager.hpp"
-#include "ServerSocketManager.hpp"
-#include "ClientSocketManager.hpp"
-#include "MiniDump.hpp"
+
+
+#include "Memory/ReferenceCounter.hpp"
+#include "Memory/RingBuffer.hpp"
+
+#include "Network/IOCPEvent.hpp"
+#include "Network/Accepter.hpp"
+#include "Network/Session.hpp"
+#include "Network/Listener.hpp"
+#include "Network/Connector.hpp"
+#include "Network/IOCPManager.hpp"
+#include "Network/ServerSocketManager.hpp"
+#include "Network/ClientSocketManager.hpp"
+
+#include "Utility/MiniDump.hpp"

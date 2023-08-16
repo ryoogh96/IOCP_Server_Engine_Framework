@@ -15,79 +15,79 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MiniDump.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="pch.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPManager.hpp">
-      <Filter>Network</Filter>
+    <ClInclude Include="Utility\MiniDump.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Session.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEnginePCH.hpp">
+    <ClInclude Include="Core\ServerEngineMacro.hpp">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEngineTypes.hpp">
+    <ClInclude Include="Core\ServerEnginePCH.hpp">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEngineMacro.hpp">
+    <ClInclude Include="Core\ServerEngineTypes.hpp">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ServerSocketManager.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientSocketManager.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Connector.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Listener.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="RingBuffer.hpp">
+    <ClInclude Include="Memory\ReferenceCounter.hpp">
       <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Accepter.hpp">
+    <ClInclude Include="Memory\RingBuffer.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Accepter.hpp">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPEvent.hpp">
+    <ClInclude Include="Network\ClientSocketManager.hpp">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="ReferenceCounter.hpp">
+    <ClInclude Include="Network\Connector.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPEvent.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPManager.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Listener.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\ServerSocketManager.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Session.hpp">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MiniDump.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="IOCPManager.cpp">
-      <Filter>Network</Filter>
+    <ClCompile Include="Utility\MiniDump.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="ServerEnginePCH.cpp">
+    <ClCompile Include="Core\ServerEnginePCH.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ServerSocketManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientSocketManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Session.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Listener.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="RingBuffer.cpp">
+    <ClCompile Include="Memory\RingBuffer.cpp">
       <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\ClientSocketManager.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\IOCPManager.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Listener.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\ServerSocketManager.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Session.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

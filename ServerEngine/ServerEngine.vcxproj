@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Libraries\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ServerEngine\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Libraries\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ServerEngine\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Libraries\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ServerEngine\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Libraries\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ServerEngine\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -171,37 +171,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Accepter.hpp" />
-    <ClInclude Include="ClientSocketManager.hpp" />
-    <ClInclude Include="Connector.hpp" />
-    <ClInclude Include="IOCPEvent.hpp" />
-    <ClInclude Include="IOCPManager.hpp" />
-    <ClInclude Include="Listener.hpp" />
-    <ClInclude Include="MiniDump.hpp" />
+    <ClInclude Include="Core\ServerEngineMacro.hpp" />
+    <ClInclude Include="Core\ServerEnginePCH.hpp" />
+    <ClInclude Include="Core\ServerEngineTypes.hpp" />
+    <ClInclude Include="Memory\ReferenceCounter.hpp" />
+    <ClInclude Include="Memory\RingBuffer.hpp" />
+    <ClInclude Include="Network\Accepter.hpp" />
+    <ClInclude Include="Network\ClientSocketManager.hpp" />
+    <ClInclude Include="Network\Connector.hpp" />
+    <ClInclude Include="Network\IOCPEvent.hpp" />
+    <ClInclude Include="Network\IOCPManager.hpp" />
+    <ClInclude Include="Network\Listener.hpp" />
+    <ClInclude Include="Network\ServerSocketManager.hpp" />
+    <ClInclude Include="Network\Session.hpp" />
     <ClInclude Include="pch.hpp" />
-    <ClInclude Include="ReferenceCounter.hpp" />
-    <ClInclude Include="RingBuffer.hpp" />
-    <ClInclude Include="ServerEngineMacro.hpp" />
-    <ClInclude Include="ServerEnginePCH.hpp" />
-    <ClInclude Include="ServerEngineTypes.hpp" />
-    <ClInclude Include="ServerSocketManager.hpp" />
-    <ClInclude Include="Session.hpp" />
+    <ClInclude Include="Utility\MiniDump.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientSocketManager.cpp" />
-    <ClCompile Include="IOCPManager.cpp" />
-    <ClCompile Include="Listener.cpp" />
-    <ClCompile Include="MiniDump.cpp" />
+    <ClCompile Include="Core\ServerEnginePCH.cpp" />
+    <ClCompile Include="Memory\RingBuffer.cpp" />
+    <ClCompile Include="Network\ClientSocketManager.cpp" />
+    <ClCompile Include="Network\IOCPManager.cpp" />
+    <ClCompile Include="Network\Listener.cpp" />
+    <ClCompile Include="Network\ServerSocketManager.cpp" />
+    <ClCompile Include="Network\Session.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RingBuffer.cpp" />
-    <ClCompile Include="ServerEnginePCH.cpp" />
-    <ClCompile Include="ServerSocketManager.cpp" />
-    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Utility\MiniDump.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
