@@ -13,7 +13,7 @@ namespace Engine
 		memcpy(m_data[m_head], data, sizeof(data));
 
 		m_head = (m_head + 1) % MAX_RING_SIZE;
-		// NOTE: 버퍼가 다 찼을경우 tail 을 1 증가시켜서 가장 오래된 데이터 제거 효과 
+		// NOTE: if the buffer full increment tail to remove old data
 		if (m_head == m_tail) m_tail = (m_tail + 1) % MAX_RING_SIZE;
 	}
 
