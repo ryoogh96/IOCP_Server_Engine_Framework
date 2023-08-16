@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Core/ServerEnginePCH.hpp""
+#include "Core/ServerEnginePCH.hpp"
+
+#define MAX_RING_SIZE 3
 
 namespace Engine
 {
@@ -9,15 +11,14 @@ namespace Engine
 	public:
 		RingBuffer() {};
 		~RingBuffer() {};
-		const bool isEmpty() const { return m_head == m_tail; }
-		// NOTE: 버퍼의 slot 하나를 쓰지 않고 남겨서 full 과 empty 상태를 구분한다.
-		const bool isFull() const { return m_head + 1 == m_tail; }
-		void push(char data[]);
-		const char* pop() const;
+
+		const bool IsEmpty() const { return m_head == m_tail; }
+		void Push(const char data[]);
+		const char* Pop();
 
 	private:
 		uint16 m_head = 0;
 		uint16 m_tail = 0;
-		char m_data[MAX_BUF_SIZE + 1] = { 0, };
+		char m_data[MAX_RING_SIZE + 1][MAX_BUF_SIZE + 1] = { 0, };
 	};
 }
