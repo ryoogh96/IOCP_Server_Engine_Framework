@@ -178,7 +178,7 @@ namespace Engine
 
 	void IOCPManager::StartAcceptClientThreads()
 	{
-		for (uint8 i = 0; i < MAX_ACCPET_SOCKET_POOL; ++i)
+		for (uint16 i = 0; i < MAX_ACCPET_SOCKET_POOL; ++i)
 		{
 			m_AcceptClientThreads.emplace_back([this]() { this->GetAcceptClientThreadFunc()(); });
 		}

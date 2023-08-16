@@ -57,6 +57,9 @@
     <ClInclude Include="IOCPEvent.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="ReferenceCounter.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniDump.cpp">

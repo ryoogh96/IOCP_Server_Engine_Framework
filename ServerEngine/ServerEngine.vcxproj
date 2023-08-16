@@ -179,6 +179,7 @@
     <ClInclude Include="Listener.hpp" />
     <ClInclude Include="MiniDump.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="ReferenceCounter.hpp" />
     <ClInclude Include="RingBuffer.hpp" />
     <ClInclude Include="ServerEngineMacro.hpp" />
     <ClInclude Include="ServerEnginePCH.hpp" />
