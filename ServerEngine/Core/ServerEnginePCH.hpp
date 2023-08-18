@@ -51,6 +51,7 @@
 #include "Memory/MemoryPool.hpp"
 #include "Memory/Memory.hpp"
 #include "Memory/ObjectPool.hpp"
+#include "Memory/TypeCast.hpp"
 
 
 #include "Network/IOCPEvent.hpp"

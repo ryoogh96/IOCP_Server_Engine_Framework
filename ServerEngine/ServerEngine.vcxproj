@@ -182,6 +182,7 @@
     <ClInclude Include="Memory\ObjectPool.hpp" />
     <ClInclude Include="Memory\ReferenceCounter.hpp" />
     <ClInclude Include="Memory\RingBuffer.hpp" />
+    <ClInclude Include="Memory\TypeCast.hpp" />
     <ClInclude Include="Network\Accepter.hpp" />
     <ClInclude Include="Network\ClientSocketManager.hpp" />
     <ClInclude Include="Network\Connector.hpp" />

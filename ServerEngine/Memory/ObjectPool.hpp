@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Core/ServerEngineTypes.hpp"
-#include "MemoryPool.hpp"
-
 namespace Engine
 {
 	template<typename Type>
