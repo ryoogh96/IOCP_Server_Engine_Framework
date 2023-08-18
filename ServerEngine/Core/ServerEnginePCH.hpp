@@ -25,7 +25,10 @@
 #include <atomic>
 #include <thread>
 
+#include <memory>
+
 #include <functional>
+#include <utility>
 
 #include <iostream>
 
@@ -44,8 +47,10 @@
 #include "Memory/RingBuffer.hpp"
 #include "Memory/ReferenceCounter.hpp"
 #include "Memory/Allocator.hpp"
+#include "Memory/Container.hpp"
 #include "Memory/MemoryPool.hpp"
 #include "Memory/Memory.hpp"
+#include "Memory/ObjectPool.hpp"
 
 
 #include "Network/IOCPEvent.hpp"

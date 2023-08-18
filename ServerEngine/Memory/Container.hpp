@@ -1,21 +1,9 @@
 #pragma once
 
-#include "Core/ServerEngineTypes.hpp"
-#include "Allocator.hpp"
-#include <array>
-#include <vector>
-#include <list>
-#include <queue>
-#include <stack>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-
 namespace Engine
 {
 	template<typename Type, uint32 Size>
-	using Array = array<Type, Size>;
+	using Array = std::array<Type, Size>;
 
 	template<typename Type>
 	using Vector = std::vector<Type, STLAllocator<Type>>;
@@ -24,7 +12,7 @@ namespace Engine
 	using List = std::list<Type, STLAllocator<Type>>;
 
 	template<typename Key, typename Type, typename Pred = std::less<Key>>
-	using Map = std::map<Key, Type, Pred, STLAllocator<pair<const Key, Type>>>;
+	using Map = std::map<Key, Type, Pred, STLAllocator<std::pair<const Key, Type>>>;
 
 	template<typename Key, typename Pred = std::less<Key>>
 	using Set = std::set<Key, Pred, STLAllocator<Key>>;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core/ServerEnginePCH.hpp"
-
 #define MAX_RING_SIZE 3
 
 namespace Engine

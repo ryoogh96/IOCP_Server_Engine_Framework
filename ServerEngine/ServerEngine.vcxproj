@@ -179,6 +179,7 @@
     <ClInclude Include="Memory\Container.hpp" />
     <ClInclude Include="Memory\Memory.hpp" />
     <ClInclude Include="Memory\MemoryPool.hpp" />
+    <ClInclude Include="Memory\ObjectPool.hpp" />
     <ClInclude Include="Memory\ReferenceCounter.hpp" />
     <ClInclude Include="Memory\RingBuffer.hpp" />
     <ClInclude Include="Network\Accepter.hpp" />

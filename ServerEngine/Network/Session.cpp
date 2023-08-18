@@ -1,7 +1,5 @@
 #include "pch.hpp"
 
-#include "Core/ServerEnginePCH.hpp"
-
 namespace Engine
 {
 	void Session::Send(const char* msg)
@@ -13,7 +11,7 @@ namespace Engine
 		
 		WSABUF sendWSABuf;
 		sendWSABuf.buf = sendBuffer;
-		sendWSABuf.len = strlen(sendBuffer);
+		sendWSABuf.len = static_cast<ULONG>(strlen(sendBuffer));
 		
 		DWORD recvLen = 0;
 		DWORD flags = 0;

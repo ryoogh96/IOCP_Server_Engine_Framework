@@ -1,7 +1,5 @@
 #include "pch.hpp"
 
-#include "Core/ServerEnginePCH.hpp"
-
 namespace Engine
 {
 	Listener::~Listener()

@@ -1,9 +1,5 @@
 #pragma once
 
-#include "pch.hpp"
-
-#include "Core/ServerEnginePCH.hpp"
-
 namespace Engine
 {
 	enum class IO_TYPE

@@ -1,9 +1,5 @@
 #pragma once
 
-#include "pch.hpp"
-
-#include "Core/ServerEnginePCH.hpp"
-
 namespace Engine
 {
 	// WARN: cannot use with already exist classes, and can occur cycle dependency -> use weak_ptr
