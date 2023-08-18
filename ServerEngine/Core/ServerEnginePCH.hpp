@@ -39,7 +39,7 @@
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
 
-
+#include "Memory/Allocator.hpp"
 #include "Memory/ReferenceCounter.hpp"
 #include "Memory/RingBuffer.hpp"
 

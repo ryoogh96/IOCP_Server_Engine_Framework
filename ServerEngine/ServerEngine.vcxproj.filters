@@ -60,6 +60,9 @@
     <ClInclude Include="Network\Session.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Allocator.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="Network\Session.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Allocator.cpp">
+      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

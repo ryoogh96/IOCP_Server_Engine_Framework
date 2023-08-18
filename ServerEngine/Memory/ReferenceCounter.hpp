@@ -6,6 +6,7 @@
 
 namespace Engine
 {
+	// WARN: cannot use with already exist classes, and can occur cycle dependency -> use weak_ptr
 	class RefCounter
 	{
 	public:
