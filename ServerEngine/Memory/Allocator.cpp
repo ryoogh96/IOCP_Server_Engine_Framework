@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "Allocator.hpp"
+#include "Memory.hpp"
 
 namespace Engine
 {
@@ -26,5 +27,15 @@ namespace Engine
 		const int64 address = reinterpret_cast<int64>(ptr);
 		const int64 baseAddress = address - (address % PAGE_SIZE);
 		::VirtualFree(reinterpret_cast<void*>(baseAddress), 0, MEM_RELEASE);
+	}
+
+	void* PoolAllocator::Alloc(int32 size)
+	{
+		return GMemory->Allocate(size);
+	}
+
+	void PoolAllocator::Release(void* ptr)
+	{
+		GMemory->Release(ptr);
 	}
 }

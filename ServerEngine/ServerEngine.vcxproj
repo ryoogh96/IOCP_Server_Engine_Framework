@@ -171,10 +171,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\ServerEngineGlobal.hpp" />
     <ClInclude Include="Core\ServerEngineMacro.hpp" />
     <ClInclude Include="Core\ServerEnginePCH.hpp" />
     <ClInclude Include="Core\ServerEngineTypes.hpp" />
     <ClInclude Include="Memory\Allocator.hpp" />
+    <ClInclude Include="Memory\Container.hpp" />
+    <ClInclude Include="Memory\Memory.hpp" />
+    <ClInclude Include="Memory\MemoryPool.hpp" />
     <ClInclude Include="Memory\ReferenceCounter.hpp" />
     <ClInclude Include="Memory\RingBuffer.hpp" />
     <ClInclude Include="Network\Accepter.hpp" />
@@ -189,8 +193,11 @@
     <ClInclude Include="Utility\MiniDump.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\ServerEngineGlobal.cpp" />
     <ClCompile Include="Core\ServerEnginePCH.cpp" />
     <ClCompile Include="Memory\Allocator.cpp" />
+    <ClCompile Include="Memory\Memory.cpp" />
+    <ClCompile Include="Memory\MemoryPool.cpp" />
     <ClCompile Include="Memory\RingBuffer.cpp" />
     <ClCompile Include="Network\ClientSocketManager.cpp" />
     <ClCompile Include="Network\IOCPManager.cpp" />

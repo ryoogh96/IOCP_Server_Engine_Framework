@@ -16,5 +16,7 @@ namespace Engine
 			CRASH("ASSERT_CRASH");		\
 			__analysis_assume(expr);	\
 		}								\
-}
+	}
+
+
 }

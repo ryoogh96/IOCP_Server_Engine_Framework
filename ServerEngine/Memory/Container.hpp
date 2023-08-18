@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Core/ServerEngineTypes.hpp"
 #include "Allocator.hpp"
 #include <array>
@@ -10,7 +11,6 @@
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
-using namespace std;
 
 namespace Engine
 {
@@ -18,36 +18,36 @@ namespace Engine
 	using Array = array<Type, Size>;
 
 	template<typename Type>
-	using Vector = vector<Type, StlAllocator<Type>>;
+	using Vector = std::vector<Type, STLAllocator<Type>>;
 
 	template<typename Type>
-	using List = list<Type, StlAllocator<Type>>;
+	using List = std::list<Type, STLAllocator<Type>>;
 
-	template<typename Key, typename Type, typename Pred = less<Key>>
-	using Map = map<Key, Type, Pred, StlAllocator<pair<const Key, Type>>>;
+	template<typename Key, typename Type, typename Pred = std::less<Key>>
+	using Map = std::map<Key, Type, Pred, STLAllocator<pair<const Key, Type>>>;
 
-	template<typename Key, typename Pred = less<Key>>
-	using Set = set<Key, Pred, StlAllocator<Key>>;
+	template<typename Key, typename Pred = std::less<Key>>
+	using Set = std::set<Key, Pred, STLAllocator<Key>>;
 
 	template<typename Type>
-	using Deque = deque<Type, StlAllocator<Type>>;
+	using Deque = std::deque<Type, STLAllocator<Type>>;
 
 	template<typename Type, typename Container = Deque<Type>>
-	using Queue = queue<Type, Container>;
+	using Queue = std::queue<Type, Container>;
 
 	template<typename Type, typename Container = Deque<Type>>
-	using Stack = stack<Type, Container>;
+	using Stack = std::stack<Type, Container>;
 
-	template<typename Type, typename Container = Vector<Type>, typename Pred = less<typename Container::value_type>>
-	using PriorityQueue = priority_queue<Type, Container, Pred>;
+	template<typename Type, typename Container = Vector<Type>, typename Pred = std::less<typename Container::value_type>>
+	using PriorityQueue = std::priority_queue<Type, Container, Pred>;
 
-	using String = basic_string<char, char_traits<char>, StlAllocator<char>>;
+	using String = std::basic_string<char, std::char_traits<char>, STLAllocator<char>>;
 
-	using WString = basic_string<wchar_t, char_traits<wchar_t>, StlAllocator<wchar_t>>;
+	using WString = std::basic_string<wchar_t, std::char_traits<wchar_t>, STLAllocator<wchar_t>>;
 
-	template<typename Key, typename Type, typename Hasher = hash<Key>, typename KeyEq = equal_to<Key>>
-	using HashMap = unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<pair<const Key, Type>>>;
+	template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
+	using HashMap = std::unordered_map<Key, Type, Hasher, KeyEq, STLAllocator<std::pair<const Key, Type>>>;
 
-	template<typename Key, typename Hasher = hash<Key>, typename KeyEq = equal_to<Key>>
-	using HashSet = unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;
+	template<typename Key, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
+	using HashSet = std::unordered_set<Key, Hasher, KeyEq, STLAllocator<Key>>;
 }

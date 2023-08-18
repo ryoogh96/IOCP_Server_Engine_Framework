@@ -63,6 +63,18 @@
     <ClInclude Include="Memory\Allocator.hpp">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Container.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryPool.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ServerEngineGlobal.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -94,6 +106,15 @@
     </ClCompile>
     <ClCompile Include="Memory\Allocator.cpp">
       <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryPool.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ServerEngineGlobal.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

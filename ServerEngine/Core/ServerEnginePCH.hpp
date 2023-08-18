@@ -10,6 +10,7 @@
 #include <process.h>
 #include <Mswsock.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <queue>
@@ -38,10 +39,14 @@
 
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
+#include "ServerEngineGlobal.hpp"
 
-#include "Memory/Allocator.hpp"
-#include "Memory/ReferenceCounter.hpp"
 #include "Memory/RingBuffer.hpp"
+#include "Memory/ReferenceCounter.hpp"
+#include "Memory/Allocator.hpp"
+#include "Memory/MemoryPool.hpp"
+#include "Memory/Memory.hpp"
+
 
 #include "Network/IOCPEvent.hpp"
 #include "Network/Accepter.hpp"
