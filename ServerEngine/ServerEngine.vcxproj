@@ -192,6 +192,7 @@
     <ClInclude Include="Network\ServerSocketManager.hpp" />
     <ClInclude Include="Network\Session.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="Utility\LockStack.hpp" />
     <ClInclude Include="Utility\MiniDump.hpp" />
   </ItemGroup>
   <ItemGroup>

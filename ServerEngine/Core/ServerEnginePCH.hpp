@@ -24,6 +24,7 @@
 
 #include <atomic>
 #include <thread>
+#include <mutex>
 
 #include <memory>
 
@@ -64,3 +65,4 @@
 #include "Network/ClientSocketManager.hpp"
 
 #include "Utility/MiniDump.hpp"
+#include "Utility/LockStack.hpp"
