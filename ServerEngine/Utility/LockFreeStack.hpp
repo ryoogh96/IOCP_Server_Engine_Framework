@@ -5,65 +5,104 @@ namespace Engine
 	template<typename T>
 	class LockFreeStack
 	{
+		struct CountedNodePtr;
+
 		struct Node
 		{
-			Node(const T& value) : data(std::make_shared<T>(value)), next(nullptr) {}
+			Node(const T& value) : data(std::make_shared<T>(value))
+			{
+
+			}
 
 			std::shared_ptr<T> data;
-			std::shared_ptr<Node*> next;
+			std::atomic<int32> internalCount = 0;
+			CountedNodePtr next;
+		};
+
+		struct CountedNodePtr
+		{
+			int32 externalCount = 0;
+			Node* ptr = nullptr;
 		};
 
 	public:
 		/*
-			1. create new Node(); 
-			2. assign new Node->next = head;
-			3. assign head = new Node();
-
 			[ ][ ][ ][ ][ ][ ]
 			[head]
 		*/
 		void Push(const T& value)
 		{
-			// 1. create new Node();
-			shared_ptr<Node> node = make_shared<Node>(value);
-			// 2. assign new Node->next = head;
-			node->next = std::atomic_load(&m_Head);
+			CountedNodePtr node;
+			node.ptr = new Node(value);
+			node.externalCount = 1;
 
-			while (std::atomic_compare_exchange_weak(&m_Head, &node->next, node) == false) 
+			node.ptr->next = m_Head;
+			while (m_Head.compare_exchange_weak(node.ptr->next, node) == false) 
 			{
 			
 			}
 		}
 
 		/*
-			1. read head;
-			2. read head->next;
-			3. assign head = head->next;
-			4. extract data to return;
-			5. delete extracted Node;
-
 			[ ][ ][ ][ ][ ][ ]
 			[head]
 		*/
 		std::shared_ptr<T> TryPop()
 		{
-			shared_ptr<Node> oldHead = std::atomic_load(&m_Head);
-
-			while (oldHead && std::atomic_compare_exchange_weak(&m_Head, &oldHead, oldHead->next) == false)
+			CountedNodePtr oldHead = m_Head;
+			while (true)
 			{
+				// the thread who has increased externalCount by 1 right now, get right to refer.
+				IncreaseHeadCount(oldHead);
+				// can safely access since externalCount >= 2.
+				Node* ptr = oldHead.ptr;
 
+				if (ptr == nullptr)
+					return std::shared_ptr<T>();
+
+				// the thread who has succeed to change head to ptr->next, get right to own.
+				if (m_Head.compare_exchange_strong(oldHead, ptr->next))
+				{
+					std::shared_ptr<T> res;
+					res.swap(ptr->data);
+
+					// external: 1 -> 2(me+1) -> 4(me+1, other+2)
+					// internal: 1 -> 0
+					const int32 countIncrease = oldHead.externalCount - 2;
+
+					if (ptr->internalCount.fetch_add(countIncrease) == -countIncrease)
+						delete ptr;
+
+					return res;
+				}
+				else if (ptr->internalCount.fetch_sub(1) == 1)
+				{
+					// get right to refer, but fail to get right to own.
+					delete ptr;
+				}
 			}
-
-			if (oldHead == nullptr)
-				return shared_ptr<T>();
-
-			return oldHead->data;
 		}
+	private:
+		void IncreaseHeadCount(CountedNodePtr& oldCounter)
+		{
+			while (true)
+			{
+				CountedNodePtr newCounter = oldCounter;
+				newCounter.externalCount++;
+
+				if (m_Head.compare_exchange_strong(oldCounter, newCounter))
+				{
+					oldCounter.externalCount = newCounter.externalCount;
+					break;
+				}
+			}
+		}
+
 	private:
 		/*
 			[ ][ ][ ][ ][ ][ ]
 			[head]
 		*/
-		std::shared_ptr<Node> m_Head;
+		std::atomic<CountedNodePtr> m_Head;
 	};
 }

@@ -67,3 +67,4 @@
 #include "Utility/MiniDump.hpp"
 #include "Utility/LockStack.hpp"
 #include "Utility/LockQueue.hpp"
+#include "Utility/LockFreeStack.hpp"
