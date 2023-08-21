@@ -192,6 +192,7 @@
     <ClInclude Include="Network\ServerSocketManager.hpp" />
     <ClInclude Include="Network\Session.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="Utility\LockFreeQueue.hpp" />
     <ClInclude Include="Utility\LockFreeStack.hpp" />
     <ClInclude Include="Utility\LockQueue.hpp" />
     <ClInclude Include="Utility\LockStack.hpp" />

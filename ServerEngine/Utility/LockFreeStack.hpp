@@ -52,7 +52,7 @@ namespace Engine
 			CountedNodePtr oldHead = m_Head;
 			while (true)
 			{
-				// the thread who has increased externalCount by 1 right now, get right to refer.
+				// the thread who has increased externalCount by 1 right now, acquire right to refer.
 				IncreaseHeadCount(oldHead);
 				// can safely access since externalCount >= 2.
 				Node* ptr = oldHead.ptr;
@@ -60,7 +60,7 @@ namespace Engine
 				if (ptr == nullptr)
 					return std::shared_ptr<T>();
 
-				// the thread who has succeed to change head to ptr->next, get right to own.
+				// the thread who has succeed to change head to ptr->next, acquire right to own.
 				if (m_Head.compare_exchange_strong(oldHead, ptr->next))
 				{
 					std::shared_ptr<T> res;
@@ -77,7 +77,7 @@ namespace Engine
 				}
 				else if (ptr->internalCount.fetch_sub(1) == 1)
 				{
-					// get right to refer, but fail to get right to own.
+					// acquire right to refer, but fail to acquire right to own.
 					delete ptr;
 				}
 			}

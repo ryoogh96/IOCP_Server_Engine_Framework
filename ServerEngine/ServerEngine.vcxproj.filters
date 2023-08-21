@@ -90,6 +90,9 @@
     <ClInclude Include="Utility\LockFreeStack.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\LockFreeQueue.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

@@ -68,3 +68,4 @@
 #include "Utility/LockStack.hpp"
 #include "Utility/LockQueue.hpp"
 #include "Utility/LockFreeStack.hpp"
+#include "Utility/LockFreeQueue.hpp"
