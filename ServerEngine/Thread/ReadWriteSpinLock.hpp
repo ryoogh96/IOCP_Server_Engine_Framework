@@ -19,10 +19,10 @@ namespace Engine
 		};
 
 	public:
-		void ReadLock();
-		void ReadUnlock();
-		void WriteLock();
-		void WriteUnlock();
+		void ReadLock(const char* name);
+		void ReadUnlock(const char* name);
+		void WriteLock(const char* name);
+		void WriteUnlock(const char* name);
 
 	private:
 		Atomic<uint32> m_LockFlag = EMPTY_FLAG;
@@ -32,20 +32,22 @@ namespace Engine
 	class ReadLockGuard
 	{
 	public:
-		ReadLockGuard(ReadWriteSpinLock& lock) : m_Lock(lock) { m_Lock.ReadLock(); }
-		~ReadLockGuard() { m_Lock.ReadUnlock(); }
+		ReadLockGuard(ReadWriteSpinLock& lock, const char* name) : m_Lock(lock), m_Name(name) { m_Lock.ReadLock(name); }
+		~ReadLockGuard() { m_Lock.ReadUnlock(m_Name); }
 
 	private:
 		ReadWriteSpinLock& m_Lock;
+		const char* m_Name;
 	};
 
 	class WriteLockGuard
 	{
 	public:
-		WriteLockGuard(ReadWriteSpinLock& lock) : m_Lock(lock) { m_Lock.WriteLock(); }
-		~WriteLockGuard() { m_Lock.WriteUnlock(); }
+		WriteLockGuard(ReadWriteSpinLock& lock, const char* name) : m_Lock(lock), m_Name(name){ m_Lock.WriteLock(name); }
+		~WriteLockGuard() { m_Lock.WriteUnlock(m_Name); }
 
 	private:
 		ReadWriteSpinLock& m_Lock;
+		const char* m_Name;
 	};
 }

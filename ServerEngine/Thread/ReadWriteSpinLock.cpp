@@ -2,8 +2,12 @@
 #include "ReadWriteSpinLock.hpp"
 
 namespace Engine {
-	void ReadWriteSpinLock::ReadLock()
+	void ReadWriteSpinLock::ReadLock(const char* name)
 	{
+	#if _DEBUG
+		GDeadLockProfiler->PushLock(name);
+	#endif
+
 		// if the same thread own this, process success
 		const uint32 lockThreadId = (m_LockFlag.load() & WRITE_THREAD_MASK) >> 16;
 		if (LThreadId == lockThreadId)
@@ -30,14 +34,23 @@ namespace Engine {
 		}
 	}
 
-	void ReadWriteSpinLock::ReadUnlock()
+	void ReadWriteSpinLock::ReadUnlock(const char* name)
 	{
+	#if _DEBUG
+		GDeadLockProfiler->PopLock(name);
+	#endif
+
 		if ((m_LockFlag.fetch_sub(1) & READ_COUNT_MASK) == 0)
 			CRASH("MULTIPLE_UNLOCK");
 	}
 
-	void ReadWriteSpinLock::WriteLock()
+	void ReadWriteSpinLock::WriteLock(const char* name)
 	{
+
+	#if _DEBUG
+		GDeadLockProfiler->PushLock(name);
+	#endif
+
 		// if the same thread own this, process success
 		const uint32 lockThreadId = (m_LockFlag.load() & WRITE_THREAD_MASK) >> 16;
 		if (LThreadId == lockThreadId)
@@ -68,8 +81,13 @@ namespace Engine {
 		}
 	}
 
-	void ReadWriteSpinLock::WriteUnlock()
+	void ReadWriteSpinLock::WriteUnlock(const char* name)
 	{
+	#if _DEBUG
+		GDeadLockProfiler->PopLock(name);
+	#endif
+
+
 		// before to release all ReadLock, make impossible to acquire WriteLock
 		if ((m_LockFlag.load() & READ_COUNT_MASK) != 0)
 			CRASH("INVALID_UNLOCK_ORDER");

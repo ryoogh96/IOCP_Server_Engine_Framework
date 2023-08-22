@@ -5,6 +5,7 @@
 namespace Engine
 {
 	ThreadManager* GThreadManager = nullptr;
+	DeadLockProfiler* GDeadLockProfiler = nullptr;
 	Memory* GMemory = nullptr;
 
 	class ServerEngineGlobal
@@ -13,12 +14,14 @@ namespace Engine
 		ServerEngineGlobal()
 		{
 			GThreadManager = new ThreadManager();
+			GDeadLockProfiler = new DeadLockProfiler();
 			GMemory = new Memory();
 		}
 
 		~ServerEngineGlobal()
 		{
 			delete GThreadManager;
+			delete GDeadLockProfiler;
 			delete GMemory;
 		}
 	} GServerEngineGlobal;
