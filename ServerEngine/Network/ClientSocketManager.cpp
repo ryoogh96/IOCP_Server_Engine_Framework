@@ -97,7 +97,7 @@ namespace Engine
 
 		DWORD numOfBytes = sizeof(sendBuffer);
 		DWORD flags = 0;
-		IOCPEvent* iocpEvent = new IOCPEvent();
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
 		iocpEvent->SetIOType(IO_TYPE::CLIENT_SEND);
 		WSABUF wsaBuf;
 		wsaBuf.buf = reinterpret_cast<char*>(sendBuffer);
@@ -133,7 +133,7 @@ namespace Engine
 		wsaBuf.len = MAX_BUF_SIZE;
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		IOCPEvent* iocpEvent = new IOCPEvent();
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
 		iocpEvent->SetIOType(IO_TYPE::CLIENT_RECV);
 
 		const int wsaResult = ::WSARecv(m_socket, &wsaBuf, 1, &recvLen, &flags, iocpEvent, nullptr);

@@ -16,7 +16,7 @@ namespace Engine
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		
-		IOCPEvent* iocpEvent = new IOCPEvent();
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
 		iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
 		if (::WSASend(socket, &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
 		{
@@ -38,7 +38,7 @@ namespace Engine
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		
-		IOCPEvent* iocpEvent = new IOCPEvent();
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
 		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
 		if (::WSARecv(socket, &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr))
 		{
