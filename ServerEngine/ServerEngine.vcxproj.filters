@@ -13,6 +13,9 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{4ed4ebbd-b50b-4c58-9fb3-1ce38fe94162}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{3e9d9661-1ccb-428b-a0c0-1fadcc140408}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -93,6 +96,12 @@
     <ClInclude Include="Utility\LockFreeQueue.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Thread\ThreadManager.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ServerEngineTLS.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -132,6 +141,12 @@
       <Filter>Memory</Filter>
     </ClCompile>
     <ClCompile Include="Core\ServerEngineGlobal.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadManager.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ServerEngineTLS.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -44,6 +44,9 @@
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
 #include "ServerEngineGlobal.hpp"
+#include "ServerEngineTLS.hpp"
+
+#include "Thread/ThreadManager.hpp"
 
 #include "Memory/RingBuffer.hpp"
 #include "Memory/ReferenceCounter.hpp"
