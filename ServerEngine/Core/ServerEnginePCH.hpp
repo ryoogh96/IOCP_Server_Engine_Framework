@@ -31,6 +31,7 @@
 #include <functional>
 #include <utility>
 
+#include <windows.h>
 #include <iostream>
 
 #include <windows.h>
@@ -47,6 +48,7 @@
 #include "ServerEngineTLS.hpp"
 
 #include "Thread/ThreadManager.hpp"
+#include "Thread/ReadWriteSpinLock.hpp"
 
 #include "Memory/RingBuffer.hpp"
 #include "Memory/ReferenceCounter.hpp"

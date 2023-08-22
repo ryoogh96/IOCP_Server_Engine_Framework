@@ -102,6 +102,9 @@
     <ClInclude Include="Core\ServerEngineTLS.hpp">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Thread\ReadWriteSpinLock.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Core\ServerEngineTLS.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\ReadWriteSpinLock.cpp">
+      <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -193,6 +193,7 @@
     <ClInclude Include="Network\ServerSocketManager.hpp" />
     <ClInclude Include="Network\Session.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="Thread\ReadWriteSpinLock.hpp" />
     <ClInclude Include="Thread\ThreadManager.hpp" />
     <ClInclude Include="Utility\LockFreeQueue.hpp" />
     <ClInclude Include="Utility\LockFreeStack.hpp" />
@@ -219,6 +220,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Thread\ReadWriteSpinLock.cpp" />
     <ClCompile Include="Thread\ThreadManager.cpp" />
     <ClCompile Include="Utility\MiniDump.cpp" />
   </ItemGroup>
