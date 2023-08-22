@@ -105,6 +105,9 @@
     <ClInclude Include="Thread\ReadWriteSpinLock.hpp">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Thread\DeadLockProfiler.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -153,6 +156,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Thread\ReadWriteSpinLock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\DeadLockProfiler.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>

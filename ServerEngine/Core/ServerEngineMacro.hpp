@@ -2,7 +2,6 @@
 
 namespace Engine
 {
-
 	#define USE_MANY_LOCKS(count) ReadWriteSpinLock _locks[count];
 	#define USE_LOCK								USE_MANY_LOCKS(1);	
 	#define READ_LOCK_IDX(idx)	  ReadLockGuard		readLockGuard_##idx(_locks[idx]);

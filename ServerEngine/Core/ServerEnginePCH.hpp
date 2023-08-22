@@ -49,6 +49,7 @@
 
 #include "Thread/ThreadManager.hpp"
 #include "Thread/ReadWriteSpinLock.hpp"
+#include "Thread/DeadLockProfiler.hpp"
 
 #include "Memory/RingBuffer.hpp"
 #include "Memory/ReferenceCounter.hpp"
