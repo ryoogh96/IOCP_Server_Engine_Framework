@@ -4,6 +4,7 @@
 
 namespace Engine
 {
+	ThreadManager* GThreadManager = nullptr;
 	Memory* GMemory = nullptr;
 
 	class ServerEngineGlobal
@@ -11,12 +12,14 @@ namespace Engine
 	public:
 		ServerEngineGlobal()
 		{
+			GThreadManager = new ThreadManager();
 			GMemory = new Memory();
 		}
 
 		~ServerEngineGlobal()
 		{
+			delete GThreadManager;
 			delete GMemory;
 		}
-	};
+	} GServerEngineGlobal;
 }

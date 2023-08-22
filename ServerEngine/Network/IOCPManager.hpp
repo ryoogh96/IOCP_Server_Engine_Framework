@@ -18,7 +18,6 @@ namespace Engine
 
 	private:
 		void StartWorkerThreads();
-		void EndThreads();
 		void WorkerThreads();
 
 		void OnServerAccept(IOCPEvent* iocpEvent);
@@ -30,8 +29,6 @@ namespace Engine
 		const uint16 MAX_ACCPET_SOCKET_POOL = 1;
 		HANDLE m_hIOCP;
 		DWORD m_dwThreadCount;
-		std::vector<std::thread> m_AcceptClientThreads;
-		std::vector<std::thread> m_WorkerThreads;
 		std::function<void()> m_AcceptClientThreadFunc;
 		std::map<SOCKET, Session*> m_SessionMap;
 	};

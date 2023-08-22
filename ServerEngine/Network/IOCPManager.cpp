@@ -4,6 +4,8 @@
 
 namespace Engine
 {
+	
+
 	IOCPManager::IOCPManager()
 	{
 		m_hIOCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0);
@@ -16,7 +18,7 @@ namespace Engine
 	IOCPManager::~IOCPManager()
 	{
 		CloseHandle(m_hIOCP);
-		EndThreads();
+		GThreadManager->Join();
 	}
 
 	void IOCPManager::AttachSocketToIOCP(const SOCKET socket) const
@@ -91,10 +93,6 @@ namespace Engine
 
 		delete session;
 		
-		// FIXME: why abort() call error occur?
-		//m_AcceptClientThreads.erase(m_AcceptClientThreads.begin());
-		//m_AcceptClientThreads.pop_back();
-		m_AcceptClientThreads.emplace_back([this]() { this->GetAcceptClientThreadFunc()(); });
 		m_RemainAcceptSocketPool++;
 	}
 
@@ -180,7 +178,7 @@ namespace Engine
 	{
 		for (uint16 i = 0; i < MAX_ACCPET_SOCKET_POOL; ++i)
 		{
-			m_AcceptClientThreads.emplace_back([this]() { this->GetAcceptClientThreadFunc()(); });
+			GThreadManager->Launch(GetAcceptClientThreadFunc());
 		}
 	}
 
@@ -188,14 +186,7 @@ namespace Engine
 	{
 		for (uint16 i = 0; i < m_dwThreadCount - MAX_ACCPET_SOCKET_POOL; ++i)
 		{
-			m_WorkerThreads.emplace_back([this]() { this->WorkerThreads(); });
-		}
-	}
-
-	void IOCPManager::EndThreads()
-	{
-		for (auto& threads : m_WorkerThreads) {
-			threads.join();
+			GThreadManager->Launch([this]() { this->WorkerThreads(); });
 		}
 	}
 }
