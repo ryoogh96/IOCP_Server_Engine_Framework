@@ -4,6 +4,8 @@ namespace Engine
 {
 	void Session::Send(const char* msg)
 	{
+		WRITE_LOCK;
+
 		const SOCKET socket = GetSocket();
 
 		char* sendBuffer = GetSendBuffer();

@@ -19,6 +19,9 @@ namespace Engine
 		void SetRecvBuffer(char buf[]) { memcpy(m_RecvBuffer, buf, sizeof(buf)); }
 
 	private:
+		USE_LOCK;
+
+	private:
 		SOCKET m_Socket = INVALID_SOCKET;
 		char m_SendBuffer[MAX_BUF_SIZE] = {};
 		char m_RecvBuffer[MAX_BUF_SIZE] = {};
