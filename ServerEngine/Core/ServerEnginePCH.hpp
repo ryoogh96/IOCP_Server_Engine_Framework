@@ -61,6 +61,7 @@
 #include "Memory/TypeCast.hpp"
 
 
+#include "Network/RecvBuffer.hpp"
 #include "Network/IOCPEvent.hpp"
 #include "Network/Accepter.hpp"
 #include "Network/Session.hpp"
