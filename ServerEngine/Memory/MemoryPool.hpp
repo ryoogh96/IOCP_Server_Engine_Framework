@@ -15,7 +15,7 @@ namespace Engine
 	struct MemoryHeader : public SLIST_ENTRY
 	{
 		// Structure: [MemoryHeader][Data]
-		MemoryHeader(int32 size) : m_AllocSize() {}
+		MemoryHeader(int32 size) : m_AllocSize(size) {}
 
 		static void* AttachHeader(MemoryHeader* header, int32 size)
 		{
