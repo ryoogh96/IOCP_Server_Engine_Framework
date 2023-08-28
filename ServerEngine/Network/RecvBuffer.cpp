@@ -11,7 +11,7 @@ namespace Engine
 
 	RecvBuffer::~RecvBuffer()
 	{
-		
+		std::cout << "~RecvBuffer()" << std::endl;
 	}
 
 	void RecvBuffer::Clean()
@@ -45,7 +45,7 @@ namespace Engine
 
 	bool RecvBuffer::onWrite(int32 numOfBytes)
 	{
-		if (numOfBytes > DataSize())
+		if (numOfBytes > FreeSize())
 			return false;
 
 		m_WritePos += numOfBytes;

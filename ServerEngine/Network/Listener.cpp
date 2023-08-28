@@ -10,7 +10,7 @@ namespace Engine
 	}
 
 
-	void Listener::CreateAcceptSocket(const HANDLE IOCPHandle, std::map<SOCKET, Session*> sessionMap) const
+	void Listener::CreateAcceptSocket(const HANDLE IOCPHandle, std::map<SOCKET, SessionRef> sessionMap) const
 	{
 		const SOCKET acceptSocket = ::WSASocketW(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 		if (acceptSocket == INVALID_SOCKET)

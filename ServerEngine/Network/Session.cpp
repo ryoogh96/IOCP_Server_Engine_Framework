@@ -2,6 +2,11 @@
 
 namespace Engine
 {
+	Session::Session() : m_RecvBuffer(BUFFER_SIZE)
+	{
+
+	}
+
 	void Session::Send(const char* msg)
 	{
 		WRITE_LOCK;
@@ -31,11 +36,9 @@ namespace Engine
 	{
 		const SOCKET socket = GetSocket();
 		
-		char* recvBuffer = GetRecvBuffer();
-		
 		WSABUF recvWSABuf;
-		recvWSABuf.buf = recvBuffer;
-		recvWSABuf.len = MAX_BUF_SIZE;
+		recvWSABuf.buf = reinterpret_cast<char*>(m_RecvBuffer.WritePos());
+		recvWSABuf.len = m_RecvBuffer.FreeSize();
 		
 		DWORD recvLen = 0;
 		DWORD flags = 0;

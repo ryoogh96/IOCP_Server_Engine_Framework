@@ -4,8 +4,6 @@
 
 namespace Engine
 {
-	
-
 	IOCPManager::IOCPManager()
 	{
 		m_hIOCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0);
@@ -40,7 +38,7 @@ namespace Engine
 			return;
 		}
 
-		Session* session = new Session();
+		SessionRef session = MakeShared<Session>();
 		session->SetSocket(iocpEvent->GetSocket());
 		AttachSocketToIOCP(session->GetSocket());
 
@@ -48,13 +46,15 @@ namespace Engine
 
 		std::cout << "session->socket: " << session->GetSocket() << " has been created" << std::endl;
 
+		RecvBuffer recvBuffer = session->GetRecvBuffer();
+
 		WSABUF recvWSABuf;
-		recvWSABuf.buf = reinterpret_cast<char*>(session->GetRecvBuffer());
-		recvWSABuf.len = MAX_BUF_SIZE;
+		recvWSABuf.buf = reinterpret_cast<char*>(recvBuffer.WritePos());
+		recvWSABuf.len = recvBuffer.FreeSize();
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
-		if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr))
+		if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, OUT &recvLen, OUT &flags, iocpEvent, nullptr))
 		{
 			const int lastError = ::WSAGetLastError();
 			if (lastError != WSA_IO_PENDING && lastError != WSAENOTCONN)
@@ -83,15 +83,21 @@ namespace Engine
 
 	void IOCPManager::OnClientDisconnect(IOCPEvent* iocpEvent)
 	{
-		Session* session = m_SessionMap.find(iocpEvent->GetSocket())->second;
+		const auto sessionMap = m_SessionMap.find(iocpEvent->GetSocket());
+
+		if (sessionMap == m_SessionMap.end())
+		{
+			return;
+		}
+
+
+		SessionRef session = sessionMap->second;
 		m_SessionMap.erase(iocpEvent->GetSocket());
 
 		std::cout << "session->socket: " << session->GetSocket() << " has been disconnected" << std::endl;
 		
 		::closesocket(session->GetSocket());
 		session->SetSocket(INVALID_SOCKET);
-
-		delete session;
 		
 		m_RemainAcceptSocketPool++;
 	}
@@ -131,13 +137,14 @@ namespace Engine
 			{
 				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_SEND" << std::endl;
 				std::cout << "session->sendBuffer:" << session->GetSendBuffer() << std::endl;
-
-				// delete with static size array occur heap validate error
-				// delete session->getSendBuffer();
 			}
 			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_RECV)
 			{
-				Session* _session = m_SessionMap.find(iocpEvent->GetSocket())->second;
+				const auto sessionMap = m_SessionMap.find(iocpEvent->GetSocket());
+
+				if (sessionMap == m_SessionMap.end()) continue;
+
+				const SessionRef _session = sessionMap->second;
 
 				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_RECV" << std::endl;
 				std::cout << "session" << _session << std::endl;
@@ -150,9 +157,20 @@ namespace Engine
 				//iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
 				//::WSASend(session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr);
 
+				RecvBuffer recvBuffer = _session->GetRecvBuffer();
+
+				if (recvBuffer.onWrite(bytesTransferred) == false)
+				{
+					// Disconnect("OnWrite Overflow");
+					std::cout << "OnWrite Overflow" << std::endl;
+					continue;
+				}
+
+				recvBuffer.Clean();
+
 				WSABUF recvWSABuf;
-				recvWSABuf.buf = reinterpret_cast<char*>(_session->GetSendBuffer());
-				recvWSABuf.len = MAX_BUF_SIZE;
+				recvWSABuf.buf = reinterpret_cast<char*>(recvBuffer.WritePos());
+				recvWSABuf.len = recvBuffer.FreeSize();
 				iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
 				if (::WSARecv(_session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr) == SOCKET_ERROR)
 				{

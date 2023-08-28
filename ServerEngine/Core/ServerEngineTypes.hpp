@@ -19,5 +19,9 @@ namespace Engine
 	using UniqueLock = std::unique_lock<std::mutex>;
 	using LockGuard = std::lock_guard<std::mutex>;
 
+	#define USING_SHARED_PTR(name)	using name##Ref = std::shared_ptr<class name>;
+
+	USING_SHARED_PTR(Session);
+
 	#define _STOMP
 }

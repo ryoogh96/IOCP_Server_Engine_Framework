@@ -17,9 +17,6 @@ namespace Engine
 			if (socket != INVALID_SOCKET)
 				::closesocket(socket);
 			sessionMap.second->SetSocket(INVALID_SOCKET);
-
-			Session* session = sessionMap.second;
-			delete session;
 		}
 
 		delete m_Listener;
@@ -93,7 +90,7 @@ namespace Engine
 		char msg[] = "message broadcasting...";
 		for (const auto sessionMap : m_iocpManager->GetSessionMap())
 		{
-			Session* session = sessionMap.second;
+			SessionRef session = sessionMap.second;
 			session->Send(msg);
 
 			std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << msg << "\"" << std::endl;
