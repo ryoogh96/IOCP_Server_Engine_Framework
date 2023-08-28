@@ -31,6 +31,7 @@ namespace Engine
 		void SetSocket(const SOCKET socket) { m_Socket = socket; }
 		const SOCKET GetSocket() const { return m_Socket; }
 		void SetBuffer(char buf[]) { memcpy(m_Buf, buf, sizeof(buf)); }
+		char* GetBuffer() { return m_Buf; }
 
 	private:
 		IO_TYPE	m_IO_Type = IO_TYPE::NONE;

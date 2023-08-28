@@ -21,6 +21,7 @@ namespace Engine
 		void WorkerThreads();
 
 		void OnServerAccept(IOCPEvent* iocpEvent);
+		void OnServerRecv(IOCPEvent* iocpEvent);
 		void OnClientConnect(IOCPEvent* iocpEvent);
 		void OnClientDisconnect(IOCPEvent* iocpEvent);
 

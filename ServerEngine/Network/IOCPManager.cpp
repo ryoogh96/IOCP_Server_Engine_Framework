@@ -102,6 +102,58 @@ namespace Engine
 		m_RemainAcceptSocketPool++;
 	}
 
+	void IOCPManager::OnServerRecv(IOCPEvent* iocpEvent)
+	{
+		const auto sessionMap = m_SessionMap.find(iocpEvent->GetSocket());
+
+		if (sessionMap == m_SessionMap.end()) return;
+
+		const SessionRef _session = sessionMap->second;
+
+		std::cout << "session" << _session << std::endl;
+		std::cout << "session->GetSocket(): " << _session->GetSocket() << std::endl;
+
+		DWORD recvLen = 0;
+		DWORD flags = 0;
+
+		// echo
+		char* _sendBuffer = _session->GetSendBuffer();
+		WSABUF sendWSABuf;
+		sendWSABuf.buf = _sendBuffer;
+		sendWSABuf.len = sizeof(iocpEvent->GetBuffer());
+		iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
+		if (::WSASend(_session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
+		{
+			std::cout << "WSASend WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+		}
+
+		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_SEND" << std::endl;
+
+		RecvBuffer recvBuffer = _session->GetRecvBuffer();
+		std::cout << "session->recvBuffer:" << recvBuffer.DataSize() << std::endl;
+
+		if (recvBuffer.onWrite(sizeof(iocpEvent->GetBuffer())) == false)
+		{
+			// Disconnect("OnWrite Overflow");
+			std::cout << "OnWrite Overflow" << std::endl;
+			return;
+		}
+
+		recvBuffer.Clean();
+
+		WSABUF recvWSABuf;
+		recvWSABuf.buf = reinterpret_cast<char*>(recvBuffer.WritePos());
+		recvWSABuf.len = recvBuffer.FreeSize();
+		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+		if (::WSARecv(_session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr) == SOCKET_ERROR)
+		{
+			std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+		}
+
+
+		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_RECV" << std::endl;
+	}
+
 
 	void IOCPManager::WorkerThreads()
 	{
@@ -112,8 +164,6 @@ namespace Engine
 			IOCPEvent* iocpEvent = nullptr;
 			const BOOL status = ::GetQueuedCompletionStatus(m_hIOCP, &bytesTransferred, reinterpret_cast<ULONG_PTR*>(&session), reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), INFINITE);
 
-			DWORD recvLen = 0;
-			DWORD flags = 0;
 			if (status == FALSE || bytesTransferred == 0)
 			{
 				if (iocpEvent->GetIOType() == IO_TYPE::SERVER_ACCEPT)
@@ -135,47 +185,12 @@ namespace Engine
 			}
 			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_SEND)
 			{
-				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_SEND" << std::endl;
-				std::cout << "session->sendBuffer:" << session->GetSendBuffer() << std::endl;
+				std::cout << "extendOverlapped->type == IO_TYPE::CLIENT_RECV" << std::endl;
+				//std::cout << "session->recvBuffer:" << session->GetRecvBuffer().DataSize() << std::endl;
 			}
 			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_RECV)
 			{
-				const auto sessionMap = m_SessionMap.find(iocpEvent->GetSocket());
-
-				if (sessionMap == m_SessionMap.end()) continue;
-
-				const SessionRef _session = sessionMap->second;
-
-				std::cout << "extendOverlapped->type == IO_TYPE::SERVER_RECV" << std::endl;
-				std::cout << "session" << _session << std::endl;
-				std::cout << "session->GetSocket(): " << _session->GetSocket() << std::endl;
-				std::cout << "session->recvBuffer:" << _session->GetSendBuffer() << std::endl;
-				// echo
-				//WSABUF sendWSABuf;
-				//sendWSABuf.buf = reinterpret_cast<char*>(session->GetSendBuffer());
-				//sendWSABuf.len = bytesTransferred;
-				//iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
-				//::WSASend(session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr);
-
-				RecvBuffer recvBuffer = _session->GetRecvBuffer();
-
-				if (recvBuffer.onWrite(bytesTransferred) == false)
-				{
-					// Disconnect("OnWrite Overflow");
-					std::cout << "OnWrite Overflow" << std::endl;
-					continue;
-				}
-
-				recvBuffer.Clean();
-
-				WSABUF recvWSABuf;
-				recvWSABuf.buf = reinterpret_cast<char*>(recvBuffer.WritePos());
-				recvWSABuf.len = recvBuffer.FreeSize();
-				iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
-				if (::WSARecv(_session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr) == SOCKET_ERROR)
-				{
-					std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
-				}
+				OnServerRecv(iocpEvent);
 			}
 			else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_SEND)
 			{
