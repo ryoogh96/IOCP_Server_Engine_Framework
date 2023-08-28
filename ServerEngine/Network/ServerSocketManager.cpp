@@ -11,6 +11,7 @@ namespace Engine
 
 	ServerSocketManager::~ServerSocketManager()
 	{
+		WRITE_LOCK;
 		for (const auto sessionMap : m_iocpManager->GetSessionMap())
 		{
 			const SOCKET socket = sessionMap.second->GetSocket();

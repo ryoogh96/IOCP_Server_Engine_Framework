@@ -38,6 +38,8 @@ namespace Engine
 			return;
 		}
 
+		WRITE_LOCK;
+
 		SessionRef session = MakeShared<Session>();
 		session->SetSocket(iocpEvent->GetSocket());
 		AttachSocketToIOCP(session->GetSocket());
@@ -90,6 +92,7 @@ namespace Engine
 			return;
 		}
 
+		WRITE_LOCK;
 
 		SessionRef session = sessionMap->second;
 		m_SessionMap.erase(iocpEvent->GetSocket());

@@ -14,6 +14,7 @@ namespace Engine
 		void Initialize();
 
 	private:
+		USE_LOCK;
 		Listener* m_Listener = nullptr;
 		Connector* m_Connector = nullptr;
 		IOCPManager* m_iocpManager = nullptr;

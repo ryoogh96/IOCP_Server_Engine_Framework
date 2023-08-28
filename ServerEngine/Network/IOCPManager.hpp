@@ -26,6 +26,8 @@ namespace Engine
 		void OnClientDisconnect(IOCPEvent* iocpEvent);
 
 	private:
+		USE_LOCK;
+
 		uint16 m_RemainAcceptSocketPool = 1;
 		const uint16 MAX_ACCPET_SOCKET_POOL = 1;
 		HANDLE m_hIOCP;
