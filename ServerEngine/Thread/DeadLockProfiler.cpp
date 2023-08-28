@@ -22,10 +22,10 @@ namespace Engine
 		}
 
 		// if already locked
-		if (m_LockStack.empty() == false)
+		if (LLockStack.empty() == false)
 		{
 			// in case of undiscovered previously, check the deadlock
-			const int32 prevId = m_LockStack.top();
+			const int32 prevId = LLockStack.top();
 			if (lockId != prevId)
 			{
 				std::set<int32>& history = m_LockHistory[prevId];
@@ -37,21 +37,21 @@ namespace Engine
 			}
 		}
 
-		m_LockStack.push(lockId);
+		LLockStack.push(lockId);
 	}
 
 	void DeadLockProfiler::PopLock(const char* name)
 	{
 		LockGuard guard(m_Lock);
 
-		if (m_LockStack.empty())
+		if (LLockStack.empty())
 			CRASH("MULTIPLE_UNLOCK");
 
 		int32 lockId = m_NameToId[name];
-		if (m_LockStack.top() != lockId)
+		if (LLockStack.top() != lockId)
 			CRASH("INVALID_UNLOCK");
 
-		m_LockStack.pop();
+		LLockStack.pop();
 	}
 
 	void DeadLockProfiler::CheckCycle()

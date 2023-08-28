@@ -15,7 +15,6 @@ namespace Engine
 	private:
 		std::unordered_map<const char*, int32>	m_NameToId;
 		std::unordered_map<int32, const char*>	m_IdToName;
-		std::stack<int32>						m_LockStack;
 		std::map<int32, std::set<int32>>		m_LockHistory;
 
 		Mutex m_Lock;
