@@ -123,6 +123,7 @@ namespace Engine
 		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
 		::memcpy(sendBuffer->Buffer(), "echo back", sizeof("echo back"));
 		sendBuffer->Close(sizeof("echo back"));
+		_session->Send(sendBuffer);
 
 		std::cout << "extendOverlapped->type == EVENT_TYPE::RECV" << std::endl;
 
