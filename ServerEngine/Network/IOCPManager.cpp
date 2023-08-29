@@ -120,15 +120,10 @@ namespace Engine
 		DWORD flags = 0;
 
 		// echo
-		char* _sendBuffer = _session->GetSendBuffer();
-		WSABUF sendWSABuf;
-		sendWSABuf.buf = _sendBuffer;
-		sendWSABuf.len = sizeof(iocpEvent->GetBuffer());
-		iocpEvent->SetIOType(EVENT_TYPE::SEND);
-		if (::WSASend(_session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
-		{
-			std::cout << "WSASend WSAGetLastError: " << ::WSAGetLastError() << std::endl;
-		}
+		SendBufferRef sendBuf = MakeShared<SendBuffer>(4096);
+		char sendBufMsg[1024] = "echo back";
+		sendBuf->CopyData(sendBufMsg, sizeof(sendBufMsg));
+		_session->Send(sendBuf);
 
 		std::cout << "extendOverlapped->type == EVENT_TYPE::RECV" << std::endl;
 
