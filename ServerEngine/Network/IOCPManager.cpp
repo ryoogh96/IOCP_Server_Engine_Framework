@@ -120,10 +120,9 @@ namespace Engine
 		DWORD flags = 0;
 
 		// echo
-		SendBufferRef sendBuf = MakeShared<SendBuffer>(4096);
-		char sendBufMsg[1024] = "echo back";
-		sendBuf->CopyData(sendBufMsg, sizeof(sendBufMsg));
-		_session->Send(sendBuf);
+		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
+		::memcpy(sendBuffer->Buffer(), "echo back", sizeof("echo back"));
+		sendBuffer->Close(sizeof("echo back"));
 
 		std::cout << "extendOverlapped->type == EVENT_TYPE::RECV" << std::endl;
 

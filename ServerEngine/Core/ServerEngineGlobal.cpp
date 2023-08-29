@@ -4,9 +4,11 @@
 
 namespace Engine
 {
-	ThreadManager* GThreadManager = nullptr;
-	DeadLockProfiler* GDeadLockProfiler = nullptr;
-	Memory* GMemory = nullptr;
+	ThreadManager*		GThreadManager = nullptr;
+	Memory*				GMemory = nullptr;
+	SendBufferManager*	GSendBufferManager = nullptr;
+
+	DeadLockProfiler*	GDeadLockProfiler = nullptr;
 
 	class ServerEngineGlobal
 	{
@@ -14,15 +16,17 @@ namespace Engine
 		ServerEngineGlobal()
 		{
 			GThreadManager = new ThreadManager();
-			GDeadLockProfiler = new DeadLockProfiler();
 			GMemory = new Memory();
+			GSendBufferManager = new SendBufferManager();
+			GDeadLockProfiler = new DeadLockProfiler();
 		}
 
 		~ServerEngineGlobal()
 		{
 			delete GThreadManager;
-			delete GDeadLockProfiler;
 			delete GMemory;
+			delete GSendBufferManager;
+			delete GDeadLockProfiler;
 		}
 	} GServerEngineGlobal;
 }

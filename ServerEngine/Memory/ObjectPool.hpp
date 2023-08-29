@@ -5,6 +5,7 @@ namespace Engine
 	template<typename Type>
 	class ObjectPool
 	{
+	public:
 		template<typename... Args>
 		static Type* Pop(Args&&... args)
 		{

@@ -24,6 +24,7 @@ namespace Engine
 	USING_SHARED_PTR(Session);
 	USING_SHARED_PTR(SendBuffer);
 	USING_SHARED_PTR(IOCPObject);
+	USING_SHARED_PTR(SendBufferChunk)
 
 	#define _STOMP
 }

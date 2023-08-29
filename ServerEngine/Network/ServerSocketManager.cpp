@@ -89,8 +89,9 @@ namespace Engine
 
 	void ServerSocketManager::Broadcast(BYTE* buffer, int32 len)
 	{
-		SendBufferRef sendBuffer = MakeShared<SendBuffer>(4096);
-		sendBuffer->CopyData(buffer, len);
+		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
+		::memcpy(sendBuffer->Buffer(), "broadcasting message...", sizeof("broadcasting message..."));
+		sendBuffer->Close(sizeof("broadcasting message..."));
 		for (const auto sessionMap : m_iocpManager->GetSessionMap())
 		{
 			SessionRef session = sessionMap.second;
