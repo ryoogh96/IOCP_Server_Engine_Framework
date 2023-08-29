@@ -8,7 +8,7 @@ namespace Engine
 		ServerSocketManager();
 		~ServerSocketManager();
 
-		void Broadcast(BYTE* buffer, int32 len);
+		void Broadcast(SendBufferRef sendBuffer);
 
 	private:
 		void Initialize();

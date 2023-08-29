@@ -87,17 +87,14 @@ namespace Engine
 		m_iocpManager->StartWorkerThreads();
 	}
 
-	void ServerSocketManager::Broadcast(BYTE* buffer, int32 len)
+	void ServerSocketManager::Broadcast(SendBufferRef sendBuffer)
 	{
-		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
-		::memcpy(sendBuffer->Buffer(), "broadcasting message...", sizeof("broadcasting message..."));
-		sendBuffer->Close(sizeof("broadcasting message..."));
 		for (const auto sessionMap : m_iocpManager->GetSessionMap())
 		{
 			SessionRef session = sessionMap.second;
 			session->Send(sendBuffer);
 
-			std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << sendBuffer << "\"" << std::endl;
+			//std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << sendBuffer->Buffer() << "\"" << std::endl;
 		}
 	}
 }

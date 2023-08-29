@@ -18,7 +18,7 @@ namespace Engine
 
 	public:
 		Session();
-		~Session() { std::cout << "~Session()" << std::endl; };
+		virtual ~Session() {};
 
 		void Send(SendBufferRef sendBuffer);
 		void Recv();
@@ -48,5 +48,23 @@ namespace Engine
 		SOCKET m_Socket = INVALID_SOCKET;
 		char m_SendBuffer[MAX_BUF_SIZE] = {};
 	};
+
+	struct PacketHeader
+	{
+		uint16 size;
+		uint16 id; // protocol ID (ex. 1=login, 2=requestMove)
+	};
+
+	//class PacketSession : public Session
+	//{
+	//public:
+	//	PacketSession() {}
+	//	virtual ~PacketSession() {}
+
+	//	PacketSessionRef GetPacketSessionRef() { return std::static_pointer_cast<PacketSession>(shared_from_this()); }
+
+	//protected:
+	//	virtual int32 OnRecvPacket(BYTE* buffer, int32 len) abstract;
+	//};
 }
 

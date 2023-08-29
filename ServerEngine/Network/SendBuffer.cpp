@@ -80,6 +80,8 @@ namespace Engine
 
 	SendBufferChunkRef SendBufferManager::Pop()
 	{
+		std::cout << "SendBufferChunkRef SendBufferManager::Pop()" << std::endl;
+
 		{
 			WRITE_LOCK;
 			if (m_SendBufferChunks.empty() == false)
@@ -101,6 +103,7 @@ namespace Engine
 
 	void SendBufferManager::PushGlobal(SendBufferChunk* buffer)
 	{
+		std::cout << "void SendBufferManager::PushGlobal" << std::endl;
 		GSendBufferManager->Push(SendBufferChunkRef(buffer, PushGlobal));
 	}
 }
