@@ -21,7 +21,7 @@ namespace Engine
 	{
 		if (IsEmpty()) return "";
 
-		char* result = new char[MAX_BUF_SIZE + 1];
+		char* result = xnew<char>(MAX_BUF_SIZE + 1);
 
 		memcpy(result, m_data[m_tail], sizeof(m_data[m_tail]));
 

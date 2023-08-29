@@ -13,7 +13,7 @@ namespace Engine
 
 		for (size = 32; size <= 1024; size += 32)
 		{
-			MemoryPool* pool = new MemoryPool(size);
+			MemoryPool* pool = xnew<MemoryPool>(size);
 			m_Pools.push_back(pool);
 
 			while (tableIndex <= size)
@@ -25,7 +25,7 @@ namespace Engine
 
 		for (; size <= 2048; size += 128)
 		{
-			MemoryPool* pool = new MemoryPool(size);
+			MemoryPool* pool = xnew<MemoryPool>(size);
 			m_Pools.push_back(pool);
 
 			while (tableIndex <= size)
@@ -37,7 +37,7 @@ namespace Engine
 
 		for (; size <= 4096; size += 256)
 		{
-			MemoryPool* pool = new MemoryPool(size);
+			MemoryPool* pool = xnew<MemoryPool>(size);
 			m_Pools.push_back(pool);
 
 			while (tableIndex <= size)

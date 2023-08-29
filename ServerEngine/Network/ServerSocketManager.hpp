@@ -8,7 +8,7 @@ namespace Engine
 		ServerSocketManager();
 		~ServerSocketManager();
 
-		void Broadcast();
+		void Broadcast(BYTE* buffer, int32 len);
 
 	private:
 		void Initialize();
@@ -18,7 +18,5 @@ namespace Engine
 		Listener* m_Listener = nullptr;
 		Connector* m_Connector = nullptr;
 		IOCPManager* m_iocpManager = nullptr;
-
-		
 	};
 }

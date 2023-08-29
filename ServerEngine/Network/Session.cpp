@@ -7,28 +7,52 @@ namespace Engine
 
 	}
 
-	void Session::Send(const char* msg)
+	void Session::Send(SendBufferRef sendBuffer)
 	{
 		WRITE_LOCK;
 
-		const SOCKET socket = GetSocket();
+		m_SendQueue.push(sendBuffer);
 
-		char* sendBuffer = GetSendBuffer();
-		memcpy(sendBuffer, msg, strlen(msg));
+		if (m_SendRegistered.exchange(true) == true)
+			return;
+
+		m_SendEvent.SetOwner(shared_from_this());
 		
-		WSABUF sendWSABuf;
-		sendWSABuf.buf = sendBuffer;
-		sendWSABuf.len = static_cast<ULONG>(strlen(sendBuffer));
-		
-		DWORD recvLen = 0;
-		DWORD flags = 0;
-		
-		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
-		iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
-		if (::WSASend(socket, &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
+
+		int32 writeSize = 0;
+		while (m_SendQueue.empty() == false)
 		{
-			std::cout << "Session::Send()" << std::endl;
-			std::cout << "::WSASend WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+			SendBufferRef sendBuffer = m_SendQueue.front();
+
+			writeSize += sendBuffer->WriteSize();
+
+			m_SendQueue.pop();
+			m_SendEvent.m_SendBuffers.push_back(sendBuffer);
+		}
+
+		// Scatter-Gather
+		Vector<WSABUF> wsaBufs;
+		wsaBufs.reserve(m_SendEvent.m_SendBuffers.size());
+		for (SendBufferRef sendBuffer : m_SendEvent.m_SendBuffers)
+		{
+			WSABUF wsaBuf;
+			wsaBuf.buf = reinterpret_cast<char*>(sendBuffer->Buffer());
+			wsaBuf.len = static_cast<LONG>(sendBuffer->WriteSize());
+			wsaBufs.push_back(wsaBuf);
+		}
+
+
+		DWORD numOfBytes = 0;
+		if (SOCKET_ERROR == ::WSASend(GetSocket(), wsaBufs.data(), static_cast<DWORD>(wsaBufs.size()), OUT & numOfBytes, 0, &m_SendEvent, nullptr))
+		{
+			int32 lastError = ::WSAGetLastError();
+			if (lastError != WSA_IO_PENDING)
+			{
+				HandleError(lastError);
+				m_SendEvent.SetOwner(nullptr);
+				m_SendEvent.m_SendBuffers.clear();
+				m_SendRegistered.store(false);
+			}
 		}
 	}
 
@@ -43,12 +67,26 @@ namespace Engine
 		DWORD recvLen = 0;
 		DWORD flags = 0;
 		
-		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
-		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>(EVENT_TYPE::RECV);
 		if (::WSARecv(socket, &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr))
 		{
 			std::cout << "Session::Recv()" << std::endl;
 			std::cout << "::WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
+		}
+	}
+
+	void Session::HandleError(int32 errorCode)
+	{
+		switch (errorCode)
+		{
+		case WSAECONNRESET:
+		case WSAECONNABORTED:
+			// Disconnect(L"HandleError");
+			std::cout << "Handle Error : " << errorCode << std::endl;
+			break;
+		default:
+			std::cout << "Handle Error : " << errorCode << std::endl;
+			break;
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace Engine
 		void Push(const T& value)
 		{
 			CountedNodePtr node;
-			node.ptr = new Node(value);
+			node.ptr = xnew<Node>(value);
 			node.externalCount = 1;
 
 			node.ptr->next = m_Head;

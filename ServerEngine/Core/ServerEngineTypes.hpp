@@ -22,6 +22,8 @@ namespace Engine
 	#define USING_SHARED_PTR(name)	using name##Ref = std::shared_ptr<class name>;
 
 	USING_SHARED_PTR(Session);
+	USING_SHARED_PTR(SendBuffer);
+	USING_SHARED_PTR(IOCPObject);
 
 	#define _STOMP
 }

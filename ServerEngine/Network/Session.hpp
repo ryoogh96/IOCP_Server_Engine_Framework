@@ -2,7 +2,14 @@
 
 namespace Engine
 {
-	class Session
+	class IOCPObject : public std::enable_shared_from_this<IOCPObject>
+	{
+	public:
+		IOCPObject() {}
+		~IOCPObject() {}
+	};
+
+	class Session : public IOCPObject
 	{
 		enum
 		{
@@ -13,7 +20,7 @@ namespace Engine
 		Session();
 		~Session() { std::cout << "~Session()" << std::endl; };
 
-		void Send(const char* msg);
+		void Send(SendBufferRef sendBuffer);
 		void Recv();
 
 		const SOCKET GetSocket() const { return m_Socket; }
@@ -24,9 +31,18 @@ namespace Engine
 		void SetRecvBuffer(RecvBuffer& recvBuffer) { m_RecvBuffer = recvBuffer; }
 
 	private:
+		void HandleError(int32 errorCode);
+
+	private:
 		USE_LOCK;
 
-		RecvBuffer m_RecvBuffer;
+		RecvBuffer				m_RecvBuffer;
+
+		Queue<SendBufferRef>	m_SendQueue;
+		Atomic<bool>			m_SendRegistered = false;
+
+	private:
+		SendEvent m_SendEvent;
 
 	private:
 		SOCKET m_Socket = INVALID_SOCKET;

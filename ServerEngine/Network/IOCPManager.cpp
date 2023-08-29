@@ -10,7 +10,6 @@ namespace Engine
 		ASSERT_CRASH(m_hIOCP != INVALID_HANDLE_VALUE);
 		m_dwThreadCount = std::thread::hardware_concurrency();
 		std::cout << "available total threads num: " << m_dwThreadCount << std::endl;
-		StartWorkerThreads();
 	}
 
 	IOCPManager::~IOCPManager()
@@ -30,7 +29,7 @@ namespace Engine
 
 	void IOCPManager::OnServerAccept(IOCPEvent* iocpEvent)
 	{
-		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_ACCEPT" << std::endl;
+		std::cout << "extendOverlapped->type == EVENT_TYPE::ACCEPT" << std::endl;
 
 		if (m_RemainAcceptSocketPool <= 0)
 		{
@@ -42,11 +41,12 @@ namespace Engine
 
 		SessionRef session = MakeShared<Session>();
 		session->SetSocket(iocpEvent->GetSocket());
-		AttachSocketToIOCP(session->GetSocket());
+		const SOCKET socket = session->GetSocket();
+		AttachSocketToIOCP(socket);
 
-		m_SessionMap.insert(std::make_pair(session->GetSocket(), session));
+		m_SessionMap.insert(std::make_pair(socket, session));
 
-		std::cout << "session->socket: " << session->GetSocket() << " has been created" << std::endl;
+		std::cout << "session->socket: " << socket << " has been created" << std::endl;
 
 		RecvBuffer recvBuffer = session->GetRecvBuffer();
 
@@ -55,8 +55,8 @@ namespace Engine
 		recvWSABuf.len = recvBuffer.FreeSize();
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
-		if (SOCKET_ERROR == ::WSARecv(session->GetSocket(), &recvWSABuf, 1, OUT &recvLen, OUT &flags, iocpEvent, nullptr))
+		iocpEvent->SetIOType(EVENT_TYPE::RECV);
+		if (SOCKET_ERROR == ::WSARecv(socket, &recvWSABuf, 1, OUT &recvLen, OUT &flags, iocpEvent, nullptr))
 		{
 			const int lastError = ::WSAGetLastError();
 			if (lastError != WSA_IO_PENDING && lastError != WSAENOTCONN)
@@ -124,13 +124,13 @@ namespace Engine
 		WSABUF sendWSABuf;
 		sendWSABuf.buf = _sendBuffer;
 		sendWSABuf.len = sizeof(iocpEvent->GetBuffer());
-		iocpEvent->SetIOType(IO_TYPE::SERVER_SEND);
+		iocpEvent->SetIOType(EVENT_TYPE::SEND);
 		if (::WSASend(_session->GetSocket(), &sendWSABuf, 1, &recvLen, flags, iocpEvent, nullptr) == SOCKET_ERROR)
 		{
 			std::cout << "WSASend WSAGetLastError: " << ::WSAGetLastError() << std::endl;
 		}
 
-		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_SEND" << std::endl;
+		std::cout << "extendOverlapped->type == EVENT_TYPE::RECV" << std::endl;
 
 		RecvBuffer recvBuffer = _session->GetRecvBuffer();
 		std::cout << "session->recvBuffer:" << recvBuffer.DataSize() << std::endl;
@@ -147,14 +147,14 @@ namespace Engine
 		WSABUF recvWSABuf;
 		recvWSABuf.buf = reinterpret_cast<char*>(recvBuffer.WritePos());
 		recvWSABuf.len = recvBuffer.FreeSize();
-		iocpEvent->SetIOType(IO_TYPE::SERVER_RECV);
+		iocpEvent->SetIOType(EVENT_TYPE::RECV);
 		if (::WSARecv(_session->GetSocket(), &recvWSABuf, 1, &recvLen, &flags, iocpEvent, nullptr) == SOCKET_ERROR)
 		{
 			std::cout << "WSARecv WSAGetLastError: " << ::WSAGetLastError() << std::endl;
 		}
 
 
-		std::cout << "extendOverlapped->type == IO_TYPE::SERVER_RECV" << std::endl;
+		std::cout << "extendOverlapped->type == EVENT_TYPE::RECV" << std::endl;
 	}
 
 
@@ -165,19 +165,19 @@ namespace Engine
 			DWORD bytesTransferred = 0;
 			Session* session = nullptr;
 			IOCPEvent* iocpEvent = nullptr;
-			const BOOL status = ::GetQueuedCompletionStatus(m_hIOCP, &bytesTransferred, reinterpret_cast<ULONG_PTR*>(&session), reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), INFINITE);
+			const BOOL status = ::GetQueuedCompletionStatus(m_hIOCP, OUT &bytesTransferred, OUT reinterpret_cast<ULONG_PTR*>(&session), OUT reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), INFINITE);
 
 			if (status == FALSE || bytesTransferred == 0)
 			{
-				if (iocpEvent->GetIOType() == IO_TYPE::SERVER_ACCEPT)
+				if (iocpEvent->GetEventType() == EVENT_TYPE::ACCEPT)
 				{
 					OnServerAccept(iocpEvent);
 				}
-				else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_CONNECT)
+				else if (iocpEvent->GetEventType() == EVENT_TYPE::CONNECT)
 				{
 					OnClientConnect(iocpEvent);
 				}
-				else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_DISCONNECT)
+				else if (iocpEvent->GetEventType() == EVENT_TYPE::DISCONNECT)
 				{
 					OnClientDisconnect(iocpEvent);
 				}
@@ -186,26 +186,26 @@ namespace Engine
 					OnClientDisconnect(iocpEvent);
 				}
 			}
-			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_SEND)
+			else if (iocpEvent->GetEventType() == EVENT_TYPE::SEND)
 			{
-				std::cout << "extendOverlapped->type == IO_TYPE::CLIENT_RECV" << std::endl;
+				std::cout << "extendOverlapped->type == EVENT_TYPE::SEND" << std::endl;
 				//std::cout << "session->recvBuffer:" << session->GetRecvBuffer().DataSize() << std::endl;
 			}
-			else if (iocpEvent->GetIOType() == IO_TYPE::SERVER_RECV)
+			else if (iocpEvent->GetEventType() == EVENT_TYPE::RECV)
 			{
 				OnServerRecv(iocpEvent);
 			}
-			else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_SEND)
+			else if (iocpEvent->GetEventType() == EVENT_TYPE::SEND)
 			{
-				std::cout << "iocpEvent->GetIOType() == IO_TYPE::CLIENT_SEND" << std::endl;
+				std::cout << "iocpEvent->GetEventType() == EVENT_TYPE::SEND" << std::endl;
 			}
-			else if (iocpEvent->GetIOType() == IO_TYPE::CLIENT_RECV)
+			else if (iocpEvent->GetEventType() == EVENT_TYPE::RECV)
 			{
-				std::cout << "iocpEvent->GetIOType() == IO_TYPE::CLIENT_RECV" << std::endl;
+				std::cout << "iocpEvent->GetEventType() == EVENT_TYPE::RECV" << std::endl;
 			}
 			else
 			{
-				printf("unknown extendOverlapped->type: %d\n", iocpEvent->GetIOType());
+				printf("unknown extendOverlapped->type: %d\n", iocpEvent->GetEventType());
 			}
 		}
 	}

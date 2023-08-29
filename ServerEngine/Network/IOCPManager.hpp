@@ -15,9 +15,9 @@ namespace Engine
 
 		void AttachSocketToIOCP(const SOCKET socket) const;
 		void StartAcceptClientThreads();
+		void StartWorkerThreads();
 
 	private:
-		void StartWorkerThreads();
 		void WorkerThreads();
 
 		void OnServerAccept(IOCPEvent* iocpEvent);

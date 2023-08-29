@@ -60,7 +60,7 @@ namespace Engine
 		LockFreeQueue()
 		{
 			CountedNodePtr node;
-			node.ptr = new Node;
+			node.ptr = xnew<Node>;
 			node.externalCount = 1;
 
 			m_Head.store(node);
@@ -77,7 +77,7 @@ namespace Engine
 			std::unique_ptr<T> newData = std::make_unique<T>(value);
 
 			CountedNodePtr dummy;
-			dummy.ptr = new Node;
+			dummy.ptr = xnew<Node>;
 			dummy.externalCount = 1;
 
 			CountedNodePtr oldTail = m_Tail.load(); // ptr = nullptr

@@ -53,7 +53,7 @@ namespace Engine
 			ASSERT_CRASH(bind != SOCKET_ERROR);
 		}
 
-		m_iocpManager = new IOCPManager();
+		m_iocpManager = xnew<IOCPManager>();
 		m_iocpManager->AttachSocketToIOCP(m_socket);
 
 		DWORD byte = 0;
@@ -74,7 +74,7 @@ namespace Engine
 		::InetPtonW(AF_INET, SERVER_IP, &address);
 		sockAddr.sin_port = ::htons(DEFAULT_PORT);
 		sockAddr.sin_addr = address;
-		m_Connector = new Connector();
+		m_Connector = xnew<Connector>();
 		if (FALSE == fpConnectEx(m_socket, (SOCKADDR*)&sockAddr, sizeof(SOCKADDR), m_Connector->GetConnectorBuf(), 0, &byte, m_Connector))
 		{
 			const int lastError = ::WSAGetLastError();
@@ -97,11 +97,10 @@ namespace Engine
 
 		DWORD numOfBytes = sizeof(sendBuffer);
 		DWORD flags = 0;
-		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
-		iocpEvent->SetIOType(IO_TYPE::CLIENT_SEND);
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>(EVENT_TYPE::SEND);
 		WSABUF wsaBuf;
 		wsaBuf.buf = reinterpret_cast<char*>(sendBuffer);
-		wsaBuf.len = strlen(sendBuffer);
+		wsaBuf.len = sizeof(sendBuffer);
 
 		while (true)
 		{
@@ -133,8 +132,7 @@ namespace Engine
 		wsaBuf.len = MAX_BUF_SIZE;
 		DWORD recvLen = 0;
 		DWORD flags = 0;
-		IOCPEvent* iocpEvent = xnew<IOCPEvent>();
-		iocpEvent->SetIOType(IO_TYPE::CLIENT_RECV);
+		IOCPEvent* iocpEvent = xnew<IOCPEvent>(EVENT_TYPE::RECV);
 
 		const int wsaResult = ::WSARecv(m_socket, &wsaBuf, 1, &recvLen, &flags, iocpEvent, nullptr);
 		if (wsaResult == SOCKET_ERROR)

@@ -38,7 +38,7 @@ namespace Engine
 			ASSERT_CRASH(wsaStartup == 0);
 		}
 
-		m_Listener = new Listener();
+		m_Listener = xnew<Listener>();
 
 		m_Listener->setListenSocket(::WSASocketW(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED));
 		if (m_Listener->getListenSocket() == INVALID_SOCKET)
@@ -80,21 +80,23 @@ namespace Engine
 			ASSERT_CRASH(listen != SOCKET_ERROR);
 		}
 
-		m_iocpManager = new IOCPManager();
+		m_iocpManager = xnew<IOCPManager>();
 		m_iocpManager->AttachSocketToIOCP(m_Listener->getListenSocket());
-		m_iocpManager->setAcceptClientThreadFunc(std::bind(&Listener::CreateAcceptSocket, m_Listener, m_iocpManager->GetIOCPHandle(), m_iocpManager->GetSessionMap()));
+		m_iocpManager->setAcceptClientThreadFunc(std::bind(&Listener::CreateAcceptSocket, m_Listener));
 		m_iocpManager->StartAcceptClientThreads();
+		m_iocpManager->StartWorkerThreads();
 	}
 
-	void ServerSocketManager::Broadcast()
+	void ServerSocketManager::Broadcast(BYTE* buffer, int32 len)
 	{
-		char msg[] = "message broadcasting...";
+		SendBufferRef sendBuffer = MakeShared<SendBuffer>(4096);
+		sendBuffer->CopyData(buffer, len);
 		for (const auto sessionMap : m_iocpManager->GetSessionMap())
 		{
 			SessionRef session = sessionMap.second;
-			session->Send(msg);
+			session->Send(sendBuffer);
 
-			std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << msg << "\"" << std::endl;
+			std::cout << "session->socket: " << session->GetSocket() << " broadcast " << "\"" << sendBuffer << "\"" << std::endl;
 		}
 	}
 }

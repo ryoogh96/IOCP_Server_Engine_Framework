@@ -62,6 +62,7 @@
 
 
 #include "Network/RecvBuffer.hpp"
+#include "Network/SendBuffer.hpp"
 #include "Network/IOCPEvent.hpp"
 #include "Network/Accepter.hpp"
 #include "Network/Session.hpp"

@@ -10,7 +10,7 @@ namespace Engine
 	}
 
 
-	void Listener::CreateAcceptSocket(const HANDLE IOCPHandle, std::map<SOCKET, SessionRef> sessionMap) const
+	void Listener::CreateAcceptSocket() const
 	{
 		const SOCKET acceptSocket = ::WSASocketW(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 		if (acceptSocket == INVALID_SOCKET)
@@ -22,7 +22,7 @@ namespace Engine
 
 
 		DWORD bytesReceived = 0;
-		Accepter* accepter = new Accepter();
+		Accepter* accepter = xnew<Accepter>();
 		accepter->SetSocket(acceptSocket);
 		if (FALSE == ::AcceptEx(m_ListenSocket, acceptSocket, accepter->GetAccepterBuf(), 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytesReceived, accepter))
 		{
@@ -31,7 +31,7 @@ namespace Engine
 			{
 				std::cout << "Listener::CreateAcceptSocket()" << std::endl;
 				std::cout << "::AcceptEx WSAGetLastError: " << lastError << std::endl;;
-				CreateAcceptSocket(IOCPHandle, sessionMap);
+				CreateAcceptSocket();
 				return;
 			}
 		}

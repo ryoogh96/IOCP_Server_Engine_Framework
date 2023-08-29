@@ -2,22 +2,20 @@
 
 namespace Engine
 {
-	enum class IO_TYPE
+	enum class EVENT_TYPE : uint8
 	{
 		NONE,
-		CLIENT_CONNECT,
-		CLIENT_DISCONNECT,
-		CLIENT_SEND,
-		CLIENT_RECV,
-		SERVER_ACCEPT,
-		SERVER_SEND,
-		SERVER_RECV,
+		CONNECT,
+		DISCONNECT,
+		SEND,
+		RECV,
+		ACCEPT,
 	};
 
 	class IOCPEvent : public WSAOVERLAPPED
 	{
 	public:
-		IOCPEvent()
+		IOCPEvent(EVENT_TYPE eventType) : m_EventType(eventType)
 		{
 			Internal = 0;
 			InternalHigh = 0;
@@ -26,16 +24,27 @@ namespace Engine
 			hEvent = nullptr;
 		}
 
-		void SetIOType(IO_TYPE type) { m_IO_Type = type; }
-		const IO_TYPE GetIOType() const { return m_IO_Type; }
+		void SetIOType(EVENT_TYPE type) { m_EventType = type; }
+		const EVENT_TYPE GetEventType() const { return m_EventType; }
 		void SetSocket(const SOCKET socket) { m_Socket = socket; }
 		const SOCKET GetSocket() const { return m_Socket; }
 		void SetBuffer(char buf[]) { memcpy(m_Buf, buf, sizeof(buf)); }
 		char* GetBuffer() { return m_Buf; }
+		void SetOwner(IOCPObjectRef owner) { m_Owner = owner; }
+		IOCPObjectRef GetOwner() { return m_Owner; }
 
 	private:
-		IO_TYPE	m_IO_Type = IO_TYPE::NONE;
+		EVENT_TYPE	m_EventType = EVENT_TYPE::NONE;
 		SOCKET m_Socket = INVALID_SOCKET;
 		char m_Buf[512] = { 0, };
+		IOCPObjectRef m_Owner;
+	};
+
+	class SendEvent : public IOCPEvent
+	{
+	public:
+		SendEvent() : IOCPEvent(EVENT_TYPE::SEND) {}
+
+		Vector<SendBufferRef> m_SendBuffers;
 	};
 }

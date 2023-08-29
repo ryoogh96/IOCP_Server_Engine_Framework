@@ -111,6 +111,9 @@
     <ClInclude Include="Network\RecvBuffer.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Network\SendBuffer.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -165,6 +168,9 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Network\RecvBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\SendBuffer.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>

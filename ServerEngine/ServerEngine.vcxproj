@@ -191,6 +191,7 @@
     <ClInclude Include="Network\IOCPManager.hpp" />
     <ClInclude Include="Network\Listener.hpp" />
     <ClInclude Include="Network\RecvBuffer.hpp" />
+    <ClInclude Include="Network\SendBuffer.hpp" />
     <ClInclude Include="Network\ServerSocketManager.hpp" />
     <ClInclude Include="Network\Session.hpp" />
     <ClInclude Include="pch.hpp" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Network\IOCPManager.cpp" />
     <ClCompile Include="Network\Listener.cpp" />
     <ClCompile Include="Network\RecvBuffer.cpp" />
+    <ClCompile Include="Network\SendBuffer.cpp" />
     <ClCompile Include="Network\ServerSocketManager.cpp" />
     <ClCompile Include="Network\Session.cpp" />
     <ClCompile Include="pch.cpp">
