@@ -40,7 +40,7 @@ int main()
 		BufferWriter bw(sendBuffer->Buffer(), 4096);
 
 		PacketHeader* header = bw.Reserve<PacketHeader>();
-		// id(uint64), 체력(uint32), 공격력(uint16)
+		// id(uint64), hp(uint32), atk(uint16)
 		bw << (uint64)1001 << (uint32)100 << (uint16)10;
 		bw.Write(sendData, sizeof(sendData));
 
