@@ -27,5 +27,11 @@ namespace Engine
 	USING_SHARED_PTR(SendBufferChunk);
 	USING_SHARED_PTR(PacketSession);
 
+	#define size16(value)	static_cast<int16>(sizeof(value))
+	#define size32(value)	static_cast<int32>(sizeof(value))
+	#define len16(arr) static_cast<int16>(sizeof(arr)/sizeof(arr[0]))
+	#define len32(arr) static_cast<int32>(sizeof(arr)/sizeof(arr[0]))
+
+
 	#define _STOMP
 }

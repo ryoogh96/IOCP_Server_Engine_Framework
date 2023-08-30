@@ -60,7 +60,7 @@
 #include "Memory/ObjectPool.hpp"
 #include "Memory/TypeCast.hpp"
 
-
+#include "Network/NetAddress.hpp"
 #include "Network/RecvBuffer.hpp"
 #include "Network/SendBuffer.hpp"
 #include "Network/IOCPEvent.hpp"
@@ -71,6 +71,7 @@
 #include "Network/IOCPManager.hpp"
 #include "Network/ServerSocketManager.hpp"
 #include "Network/ClientSocketManager.hpp"
+#include "Network/Service.hpp"
 
 #include "Utility/MiniDump.hpp"
 #include "Utility/LockStack.hpp"
