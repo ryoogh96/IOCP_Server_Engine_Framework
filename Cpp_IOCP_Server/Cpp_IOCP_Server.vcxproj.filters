@@ -12,6 +12,7 @@
     </ClCompile>
     <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="GameSessionManager.cpp" />
+    <ClCompile Include="ServerPacketHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -19,5 +20,6 @@
     </ClInclude>
     <ClInclude Include="GameSession.hpp" />
     <ClInclude Include="GameSessionManager.hpp" />
+    <ClInclude Include="ServerPacketHandler.hpp" />
   </ItemGroup>
 </Project>

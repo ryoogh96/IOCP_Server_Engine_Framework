@@ -10,6 +10,7 @@ namespace Engine
 		~SendBuffer();
 
 		BYTE*	Buffer() { return m_Buffer; }
+		uint32	AllocSize() { return m_AllocSize; }
 		int32	WriteSize() { return m_WriteSize; }
 		void	Close(uint32 writeSize);
 

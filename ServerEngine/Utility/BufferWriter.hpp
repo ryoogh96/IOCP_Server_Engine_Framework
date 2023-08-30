@@ -45,17 +45,10 @@ namespace Engine
 	}
 
 	template<typename T>
-	BufferWriter& BufferWriter::operator<<(const T& src)
-	{
-		*reinterpret_cast<T*>(&m_Buffer[m_Pos]) = src;
-		m_Pos += sizeof(T);
-		return *this;
-	}
-
-	template<typename T>
 	BufferWriter& BufferWriter::operator<<(T&& src)
 	{
-		*reinterpret_cast<T*>(&m_Buffer[m_Pos]) = std::move(src);
+		using DataType = std::remove_reference_t<T>;
+		*reinterpret_cast<DataType*>(&m_Buffer[m_Pos]) = std::forward<DataType>(src);
 		m_Pos += sizeof(T);
 		return *this;
 	}

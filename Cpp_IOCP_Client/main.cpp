@@ -1,8 +1,11 @@
 ﻿#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include "pch.hpp"
-
-#include "Core/ServerEnginePCH.hpp"
+#include "Thread/ThreadManager.hpp"
+#include "Network/Service.hpp"
+#include "Network/Session.hpp"
+#include "Utility/BufferReader.hpp"
+#include "ClientPacketHandler.hpp"
 
 using namespace Engine;
 
@@ -21,25 +24,9 @@ public:
 		std::cout << "Connected To Server" << std::endl;
 	}
 
-	virtual int32 OnRecvPacket(BYTE* buffer, int32 len) override
+	virtual void OnRecvPacket(BYTE* buffer, int32 len) override
 	{
-		BufferReader br(buffer, len);
-
-		PacketHeader header;
-		br >> header;
-
-		uint64 id;
-		uint32 hp;
-		uint16 attack;
-		br >> id >> hp >> attack;
-
-		std::cout << "ID: " << id << " HP : " << hp << " ATT : " << attack << std::endl;
-
-		char recvBuffer[4096];
-		br.Read(recvBuffer, header.size - sizeof(PacketHeader) - 8 - 4 - 2);
-		std::cout << recvBuffer << std::endl;
-
-		return len;
+		ClientPacketHandler::HandlePacket(buffer, len);
 	}
 
 	virtual void OnSend(Engine::int32 len) override

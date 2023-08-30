@@ -4,7 +4,10 @@
 #include "Network/Session.hpp"
 #include "GameSession.hpp"
 #include "GameSessionManager.hpp"
+#include "Utility/BufferWriter.hpp"
+#include "ServerPacketHandler.hpp"
 
+using namespace std;
 using namespace Engine;
 
 int main()
@@ -35,20 +38,8 @@ int main()
 
 	while (true)
 	{
-		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
-
-		BufferWriter bw(sendBuffer->Buffer(), 4096);
-
-		PacketHeader* header = bw.Reserve<PacketHeader>();
-		// id(uint64), hp(uint32), atk(uint16)
-		bw << (uint64)1001 << (uint32)100 << (uint16)10;
-		bw.Write(sendData, sizeof(sendData));
-
-		header->size = bw.WriteSize();
-		header->id = 1; // 1 : Test Msg
-
-		sendBuffer->Close(bw.WriteSize());
-
+		vector<BuffData> buffs{ BuffData {100, 1.5f}, BuffData{200, 2.3f}, BuffData {300, 0.7f } };
+		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_TEST(1001, 100, 10, buffs);
 		GSessionManager.Broadcast(sendBuffer);
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(250));

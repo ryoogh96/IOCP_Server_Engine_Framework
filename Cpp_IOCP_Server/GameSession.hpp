@@ -11,6 +11,6 @@ public:
 
 	virtual void OnConnected() override;
 	virtual void OnDisconnected() override;
-	virtual Engine::int32 OnRecvPacket(BYTE* buffer, Engine::int32 len) override;
+	virtual void OnRecvPacket(BYTE* buffer, Engine::int32 len) override;
 	virtual void OnSend(Engine::int32 len) override;
 };
