@@ -24,8 +24,11 @@ namespace Engine
 	USING_SHARED_PTR(Session);
 	USING_SHARED_PTR(SendBuffer);
 	USING_SHARED_PTR(IOCPObject);
+	USING_SHARED_PTR(IOCPManager);
 	USING_SHARED_PTR(SendBufferChunk);
 	USING_SHARED_PTR(PacketSession);
+	USING_SHARED_PTR(Listener);
+	USING_SHARED_PTR(ServerService);
 
 	#define size16(value)	static_cast<int16>(sizeof(value))
 	#define size32(value)	static_cast<int32>(sizeof(value))

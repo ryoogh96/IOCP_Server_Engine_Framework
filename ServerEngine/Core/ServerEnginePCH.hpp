@@ -38,10 +38,6 @@
 #include <tchar.h>
 #include <DbgHelp.h>
 
-#define SERVER_IP          L"127.0.0.1"
-#define DEFAULT_PORT       20000
-#define MAX_BUF_SIZE       1024
-
 #include "ServerEngineMacro.hpp"
 #include "ServerEngineTypes.hpp"
 #include "ServerEngineGlobal.hpp"
@@ -64,13 +60,10 @@
 #include "Network/RecvBuffer.hpp"
 #include "Network/SendBuffer.hpp"
 #include "Network/IOCPEvent.hpp"
-#include "Network/Accepter.hpp"
+#include "Network/SocketManager.hpp"
 #include "Network/Session.hpp"
 #include "Network/Listener.hpp"
-#include "Network/Connector.hpp"
 #include "Network/IOCPManager.hpp"
-#include "Network/ServerSocketManager.hpp"
-#include "Network/ClientSocketManager.hpp"
 #include "Network/Service.hpp"
 
 #include "Utility/MiniDump.hpp"

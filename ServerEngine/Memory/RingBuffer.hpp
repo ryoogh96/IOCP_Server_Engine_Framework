@@ -1,5 +1,6 @@
 #pragma once
 
+#define MAX_BUF_SIZE 1024
 #define MAX_RING_SIZE 3
 
 namespace Engine

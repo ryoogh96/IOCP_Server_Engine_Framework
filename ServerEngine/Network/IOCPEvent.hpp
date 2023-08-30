@@ -7,37 +7,48 @@ namespace Engine
 		NONE,
 		CONNECT,
 		DISCONNECT,
+		ACCEPT,
 		SEND,
 		RECV,
-		ACCEPT,
 	};
 
 	class IOCPEvent : public WSAOVERLAPPED
 	{
 	public:
-		IOCPEvent(EVENT_TYPE eventType) : m_EventType(eventType)
-		{
-			Internal = 0;
-			InternalHigh = 0;
-			Offset = 0;
-			OffsetHigh = 0;
-			hEvent = nullptr;
-		}
+		IOCPEvent(EVENT_TYPE type) { Init(); };
 
-		void SetIOType(EVENT_TYPE type) { m_EventType = type; }
-		const EVENT_TYPE GetEventType() const { return m_EventType; }
-		void SetSocket(const SOCKET socket) { m_Socket = socket; }
-		const SOCKET GetSocket() const { return m_Socket; }
-		void SetBuffer(char buf[]) { memcpy(m_Buf, buf, sizeof(buf)); }
-		char* GetBuffer() { return m_Buf; }
-		void SetOwner(IOCPObjectRef owner) { m_Owner = owner; }
-		IOCPObjectRef GetOwner() { return m_Owner; }
+		void			Init() { OVERLAPPED::hEvent = 0; OVERLAPPED::Internal = 0; OVERLAPPED::InternalHigh = 0; OVERLAPPED::Offset = 0;OVERLAPPED::OffsetHigh = 0; }
 
-	private:
-		EVENT_TYPE	m_EventType = EVENT_TYPE::NONE;
-		SOCKET m_Socket = INVALID_SOCKET;
-		char m_Buf[512] = { 0, };
-		IOCPObjectRef m_Owner;
+	public:
+		EVENT_TYPE		eventType;
+		IOCPObjectRef	owner;
+	};
+
+	class ConnectEvent : public IOCPEvent
+	{
+	public:
+		ConnectEvent() : IOCPEvent(EVENT_TYPE::CONNECT) { }
+	};
+
+	class DisconnectEvent : public IOCPEvent
+	{
+	public:
+		DisconnectEvent() : IOCPEvent(EVENT_TYPE::DISCONNECT) { }
+	};
+
+	class AcceptEvent : public IOCPEvent
+	{
+	public:
+		AcceptEvent() : IOCPEvent(EVENT_TYPE::ACCEPT) { }
+
+	public:
+		SessionRef	session = nullptr;
+	};
+
+	class RecvEvent : public IOCPEvent
+	{
+	public:
+		RecvEvent() : IOCPEvent(EVENT_TYPE::RECV) { }
 	};
 
 	class SendEvent : public IOCPEvent

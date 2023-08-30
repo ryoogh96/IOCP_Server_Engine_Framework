@@ -11,8 +11,8 @@ namespace Engine
 		~RecvBuffer();
 
 		void Clean();
-		bool onRead(int32 numOfBytes);
-		bool onWrite(int32 numOfBytes);
+		bool OnRead(int32 numOfBytes);
+		bool OnWrite(int32 numOfBytes);
 
 		BYTE* ReadPos() { return &m_Buffer[m_ReadPos]; }
 		BYTE* WritePos() { return &m_Buffer[m_WritePos]; }

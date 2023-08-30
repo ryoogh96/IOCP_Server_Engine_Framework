@@ -34,7 +34,7 @@ namespace Engine
 		}
 	}
 
-	bool RecvBuffer::onRead(int32 numOfBytes)
+	bool RecvBuffer::OnRead(int32 numOfBytes)
 	{
 		if (numOfBytes > DataSize())
 			return false;
@@ -43,7 +43,7 @@ namespace Engine
 		return true;
 	}
 
-	bool RecvBuffer::onWrite(int32 numOfBytes)
+	bool RecvBuffer::OnWrite(int32 numOfBytes)
 	{
 		if (numOfBytes > FreeSize())
 			return false;

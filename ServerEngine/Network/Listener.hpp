@@ -1,19 +1,31 @@
 #pragma once
 
+#include "IOCPManager.hpp"
+#include "NetAddress.hpp"
+
 namespace Engine
 {
-	class Listener
+	class Listener : public IOCPObject
 	{
 	public:
-		Listener() {};
+		Listener() = default;
 		~Listener();
 
-		const SOCKET getListenSocket() { return m_ListenSocket; }
-		void setListenSocket(const SOCKET socket) { m_ListenSocket = socket; }
+	public:
+		bool StartAccept(ServerServiceRef service);
+		void CloseSocket();
 
-		void CreateAcceptSocket() const;
+	public:
+		virtual HANDLE GetHandle() override;
+		virtual void Dispatch(class IOCPEvent* iocpEvent, int32 numOfBytes = 0) override;
 
 	private:
-		SOCKET m_ListenSocket = INVALID_SOCKET;
+		void RegisterAccept(AcceptEvent* acceptEvent);
+		void ProcessAccept(AcceptEvent* acceptEvent);
+
+	protected:
+		SOCKET m_Socket = INVALID_SOCKET;
+		Vector<AcceptEvent*> m_AcceptEvents;
+		ServerServiceRef m_Service;
 	};
 }

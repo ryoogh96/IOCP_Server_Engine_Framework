@@ -39,15 +39,6 @@
     <ClInclude Include="Memory\RingBuffer.hpp">
       <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Network\Accepter.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\ClientSocketManager.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\Connector.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
     <ClInclude Include="Network\IOCPEvent.hpp">
       <Filter>Network</Filter>
     </ClInclude>
@@ -55,9 +46,6 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Network\Listener.hpp">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\ServerSocketManager.hpp">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Network\Session.hpp">
@@ -114,6 +102,15 @@
     <ClInclude Include="Network\SendBuffer.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Network\Service.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\NetAddress.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketManager.hpp">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -128,16 +125,10 @@
     <ClCompile Include="Memory\RingBuffer.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
-    <ClCompile Include="Network\ClientSocketManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="Network\IOCPManager.cpp">
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Network\Listener.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Network\ServerSocketManager.cpp">
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Network\Session.cpp">
@@ -171,6 +162,15 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Network\SendBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Service.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\NetAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\SocketManager.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
