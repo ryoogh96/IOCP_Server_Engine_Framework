@@ -111,6 +111,12 @@
     <ClInclude Include="Network\SocketManager.hpp">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\BufferReader.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\BufferWriter.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -172,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="Network\SocketManager.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\BufferReader.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\BufferWriter.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,13 +21,22 @@ public:
 		std::cout << "Connected To Server" << std::endl;
 	}
 
-	virtual Engine::int32 OnRecvPacket(BYTE* buffer, Engine::int32 len) override
+	virtual int32 OnRecvPacket(BYTE* buffer, int32 len) override
 	{
-		Engine::PacketHeader header = *(reinterpret_cast<Engine::PacketHeader*>(buffer));
-		std::cout << "Packet ID : " << header.id << "Size : " << header.size << std::endl;
+		BufferReader br(buffer, len);
+
+		PacketHeader header;
+		br >> header;
+
+		uint64 id;
+		uint32 hp;
+		uint16 attack;
+		br >> id >> hp >> attack;
+
+		std::cout << "ID: " << id << " HP : " << hp << " ATT : " << attack << std::endl;
 
 		char recvBuffer[4096];
-		::memcpy(recvBuffer, &buffer[4], header.size - sizeof(Engine::PacketHeader));
+		br.Read(recvBuffer, header.size - sizeof(PacketHeader) - 8 - 4 - 2);
 		std::cout << recvBuffer << std::endl;
 
 		return len;

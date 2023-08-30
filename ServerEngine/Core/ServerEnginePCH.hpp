@@ -71,3 +71,5 @@
 #include "Utility/LockQueue.hpp"
 #include "Utility/LockFreeStack.hpp"
 #include "Utility/LockFreeQueue.hpp"
+#include "Utility/BufferReader.hpp"
+#include "Utility/BufferWriter.hpp"

@@ -197,6 +197,8 @@
     <ClInclude Include="Thread\DeadLockProfiler.hpp" />
     <ClInclude Include="Thread\ReadWriteSpinLock.hpp" />
     <ClInclude Include="Thread\ThreadManager.hpp" />
+    <ClInclude Include="Utility\BufferReader.hpp" />
+    <ClInclude Include="Utility\BufferWriter.hpp" />
     <ClInclude Include="Utility\LockFreeQueue.hpp" />
     <ClInclude Include="Utility\LockFreeStack.hpp" />
     <ClInclude Include="Utility\LockQueue.hpp" />
@@ -228,6 +230,8 @@
     <ClCompile Include="Thread\DeadLockProfiler.cpp" />
     <ClCompile Include="Thread\ReadWriteSpinLock.cpp" />
     <ClCompile Include="Thread\ThreadManager.cpp" />
+    <ClCompile Include="Utility\BufferReader.cpp" />
+    <ClCompile Include="Utility\BufferWriter.cpp" />
     <ClCompile Include="Utility\MiniDump.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
