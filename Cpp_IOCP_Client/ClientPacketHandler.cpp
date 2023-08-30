@@ -20,7 +20,6 @@ void ClientPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 	}
 }
 
-// 패킷 설계 TEMP
 struct BuffData
 {
 	uint64 buffId;
@@ -32,10 +31,10 @@ struct S_TEST
 	uint64 id;
 	uint32 hp;
 	uint16 attack;
-	// 가변 데이터
-	// 1) 문자열 (ex. name)
-	// 2) 그냥 바이트 배열 (ex. 길드 이미지)
-	// 3) 일반 리스트
+	// variable data
+	// 1) string (ex. name)
+	// 2) pure byte array (ex. guild image)
+	// 3) general list
 	vector<BuffData> buffs;
 };
 
