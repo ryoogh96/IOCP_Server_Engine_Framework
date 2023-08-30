@@ -55,7 +55,7 @@ namespace Engine
 
 	void Session::Dispatch(IOCPEvent* iocpEvent, int32 numOfBytes)
 	{
-		switch (iocpEvent->eventType)
+		switch (iocpEvent->m_EventType)
 		{
 		case EVENT_TYPE::CONNECT:
 			ProcessConnect();
@@ -89,7 +89,7 @@ namespace Engine
 			return false;
 
 		m_ConnectEvent.Init();
-		m_ConnectEvent.owner = shared_from_this(); // ADD_REF
+		m_ConnectEvent.m_Owner = shared_from_this(); // ADD_REF
 
 		DWORD numOfBytes = 0;
 		SOCKADDR_IN sockAddr = GetService()->GetNetAddress().GetSockAddr();
@@ -98,7 +98,7 @@ namespace Engine
 			int32 errorCode = ::WSAGetLastError();
 			if (errorCode != WSA_IO_PENDING)
 			{
-				m_ConnectEvent.owner = nullptr; // RELEASE_REF
+				m_ConnectEvent.m_Owner = nullptr; // RELEASE_REF
 				return false;
 			}
 		}
@@ -109,14 +109,14 @@ namespace Engine
 	bool Session::RegisterDisconnect()
 	{
 		m_DisconnectEvent.Init();
-		m_DisconnectEvent.owner = shared_from_this(); // ADD_REF
+		m_DisconnectEvent.m_Owner = shared_from_this(); // ADD_REF
 
 		if (false == SocketManager::DisconnectEx(m_Socket, &m_DisconnectEvent, TF_REUSE_SOCKET, 0))
 		{
 			int32 errorCode = ::WSAGetLastError();
 			if (errorCode != WSA_IO_PENDING)
 			{
-				m_DisconnectEvent.owner = nullptr; // RELEASE_REF
+				m_DisconnectEvent.m_Owner = nullptr; // RELEASE_REF
 				return false;
 			}
 		}
@@ -130,7 +130,7 @@ namespace Engine
 			return;
 
 		m_RecvEvent.Init();
-		m_RecvEvent.owner = shared_from_this(); // ADD_REF
+		m_RecvEvent.m_Owner = shared_from_this(); // ADD_REF
 
 		WSABUF wsaBuf;
 		wsaBuf.buf = reinterpret_cast<char*>(m_RecvBuffer.WritePos());
@@ -144,7 +144,7 @@ namespace Engine
 			if (errorCode != WSA_IO_PENDING)
 			{
 				HandleError(errorCode);
-				m_RecvEvent.owner = nullptr; // RELEASE_REF
+				m_RecvEvent.m_Owner = nullptr; // RELEASE_REF
 			}
 		}
 	}
@@ -155,7 +155,7 @@ namespace Engine
 			return;
 
 		m_SendEvent.Init();
-		m_SendEvent.owner = shared_from_this(); // ADD_REF
+		m_SendEvent.m_Owner = shared_from_this(); // ADD_REF
 
 		{
 			WRITE_LOCK;
@@ -190,7 +190,7 @@ namespace Engine
 			if (errorCode != WSA_IO_PENDING)
 			{
 				HandleError(errorCode);
-				m_SendEvent.owner = nullptr; // RELEASE_REF
+				m_SendEvent.m_Owner = nullptr; // RELEASE_REF
 				m_SendEvent.m_SendBuffers.clear(); // RELEASE_REF
 				m_SendRegistered.store(false);
 			}
@@ -199,7 +199,7 @@ namespace Engine
 
 	void Session::ProcessConnect()
 	{
-		m_ConnectEvent.owner = nullptr; // RELEASE_REF
+		m_ConnectEvent.m_Owner = nullptr; // RELEASE_REF
 
 		m_Connected.store(true);
 
@@ -213,7 +213,7 @@ namespace Engine
 
 	void Session::ProcessDisconnect()
 	{
-		m_DisconnectEvent.owner = nullptr; // RELEASE_REF
+		m_DisconnectEvent.m_Owner = nullptr; // RELEASE_REF
 
 		OnDisconnected(); // reimplement on contents logic
 		GetService()->ReleaseSession(GetSessionRef());
@@ -221,7 +221,7 @@ namespace Engine
 
 	void Session::ProcessRecv(int32 numOfBytes)
 	{
-		m_RecvEvent.owner = nullptr; // RELEASE_REF
+		m_RecvEvent.m_Owner = nullptr; // RELEASE_REF
 
 		if (numOfBytes == 0)
 		{
@@ -250,7 +250,7 @@ namespace Engine
 
 	void Session::ProcessSend(int32 numOfBytes)
 	{
-		m_SendEvent.owner = nullptr; // RELEASE_REF
+		m_SendEvent.m_Owner = nullptr; // RELEASE_REF
 		m_SendEvent.m_SendBuffers.clear(); // RELEASE_REF
 
 		if (numOfBytes == 0)

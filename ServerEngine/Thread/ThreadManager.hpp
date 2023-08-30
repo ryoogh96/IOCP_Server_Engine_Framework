@@ -1,5 +1,8 @@
 #pragma once
 
+#include <thread>
+#include <functional>
+
 namespace Engine
 {
 	class ThreadManager

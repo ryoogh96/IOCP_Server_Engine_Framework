@@ -29,7 +29,7 @@ namespace Engine
 
 		if (::GetQueuedCompletionStatus(m_IOCPHandle, OUT & numOfBytes, OUT & key, OUT reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), timeoutMs))
 		{
-			IOCPObjectRef iocpObject = iocpEvent->owner;
+			IOCPObjectRef iocpObject = iocpEvent->m_Owner;
 			iocpObject->Dispatch(iocpEvent, numOfBytes);
 		}
 		else
@@ -40,7 +40,7 @@ namespace Engine
 			case WAIT_TIMEOUT:
 				return false;
 			default:
-				IOCPObjectRef iocpObject = iocpEvent->owner;
+				IOCPObjectRef iocpObject = iocpEvent->m_Owner;
 				iocpObject->Dispatch(iocpEvent, numOfBytes);
 				break;
 			}

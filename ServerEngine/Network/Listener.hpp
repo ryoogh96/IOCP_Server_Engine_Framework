@@ -3,6 +3,9 @@
 #include "IOCPManager.hpp"
 #include "NetAddress.hpp"
 
+class AcceptEvnet;
+class ServerService;
+
 namespace Engine
 {
 	class Listener : public IOCPObject

@@ -6,7 +6,7 @@ namespace Engine
 	class SendBuffer
 	{
 	public:
-		SendBuffer(SendBufferChunkRef owner, BYTE* buffer, int32 allocSize);
+		SendBuffer(SendBufferChunkRef m_Owner, BYTE* buffer, int32 allocSize);
 		~SendBuffer();
 
 		BYTE*	Buffer() { return m_Buffer; }

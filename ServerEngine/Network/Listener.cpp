@@ -46,7 +46,7 @@ namespace Engine
 		for (int32 i = 0; i < acceptCount; i++)
 		{
 			AcceptEvent* acceptEvent = xnew<AcceptEvent>();
-			acceptEvent->owner = shared_from_this();
+			acceptEvent->m_Owner = shared_from_this();
 			m_AcceptEvents.push_back(acceptEvent);
 			RegisterAccept(acceptEvent);
 		}
@@ -66,7 +66,7 @@ namespace Engine
 
 	void Listener::Dispatch(IOCPEvent* iocpEvent, int32 numOfBytes)
 	{
-		ASSERT_CRASH(iocpEvent->eventType == EVENT_TYPE::ACCEPT);
+		ASSERT_CRASH(iocpEvent->m_EventType == EVENT_TYPE::ACCEPT);
 		AcceptEvent* acceptEvent = static_cast<AcceptEvent*>(iocpEvent);
 		ProcessAccept(acceptEvent);
 	}

@@ -15,13 +15,13 @@ namespace Engine
 	class IOCPEvent : public WSAOVERLAPPED
 	{
 	public:
-		IOCPEvent(EVENT_TYPE type) { Init(); };
+		IOCPEvent(EVENT_TYPE type) : m_EventType(type) { Init(); };
 
-		void			Init() { OVERLAPPED::hEvent = 0; OVERLAPPED::Internal = 0; OVERLAPPED::InternalHigh = 0; OVERLAPPED::Offset = 0;OVERLAPPED::OffsetHigh = 0; }
+		void			Init() { OVERLAPPED::hEvent = 0; OVERLAPPED::Internal = 0; OVERLAPPED::InternalHigh = 0; OVERLAPPED::Offset = 0; OVERLAPPED::OffsetHigh = 0; }
 
 	public:
-		EVENT_TYPE		eventType;
-		IOCPObjectRef	owner;
+		EVENT_TYPE		m_EventType;
+		IOCPObjectRef	m_Owner;
 	};
 
 	class ConnectEvent : public IOCPEvent

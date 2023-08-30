@@ -3,8 +3,8 @@
 
 namespace Engine
 {
-	SendBuffer::SendBuffer(SendBufferChunkRef owner, BYTE* buffer, int32 allocSize)
-		: m_Owner(owner), m_Buffer(buffer), m_AllocSize(allocSize)
+	SendBuffer::SendBuffer(SendBufferChunkRef m_Owner, BYTE* buffer, int32 allocSize)
+		: m_Owner(m_Owner), m_Buffer(buffer), m_AllocSize(allocSize)
 	{
 
 	}

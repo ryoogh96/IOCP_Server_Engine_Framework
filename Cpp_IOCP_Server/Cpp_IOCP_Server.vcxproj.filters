@@ -10,10 +10,14 @@
     <ClCompile Include="pch.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="GameSession.cpp" />
+    <ClCompile Include="GameSessionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="GameSession.hpp" />
+    <ClInclude Include="GameSessionManager.hpp" />
   </ItemGroup>
 </Project>

@@ -29,6 +29,7 @@ namespace Engine
 	USING_SHARED_PTR(PacketSession);
 	USING_SHARED_PTR(Listener);
 	USING_SHARED_PTR(ServerService);
+	USING_SHARED_PTR(ClientService);
 
 	#define size16(value)	static_cast<int16>(sizeof(value))
 	#define size32(value)	static_cast<int32>(sizeof(value))

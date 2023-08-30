@@ -19,6 +19,7 @@ namespace Engine
 			GMemory = new Memory();
 			GSendBufferManager = new SendBufferManager();
 			GDeadLockProfiler = new DeadLockProfiler();
+			SocketManager::Initialize();
 		}
 
 		~ServerEngineGlobal()
@@ -27,6 +28,7 @@ namespace Engine
 			delete GMemory;
 			delete GSendBufferManager;
 			delete GDeadLockProfiler;
+			SocketManager::Clear();
 		}
 	} GServerEngineGlobal;
 }
