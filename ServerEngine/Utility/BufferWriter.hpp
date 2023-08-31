@@ -19,13 +19,13 @@ namespace Engine
 		bool			Write(void* src, uint32 len);
 
 		template<typename T>
-		T* Reserve();
+		T*				Reserve(uint16 count = 1);
 
 		template<typename T>
-		BufferWriter& operator<<(const T& src);
+		BufferWriter&	operator<<(const T& src);
 
 		template<typename T>
-		BufferWriter& operator<<(T&& src);
+		BufferWriter&	operator<<(T&& src);
 
 	private:
 		BYTE*			m_Buffer = nullptr;
@@ -34,13 +34,13 @@ namespace Engine
 	};
 
 	template<typename T>
-	T* BufferWriter::Reserve()
+	T* BufferWriter::Reserve(uint16 count)
 	{
-		if (FreeSize() < sizeof(T))
+		if (FreeSize() < (sizeof(T) * count))
 			return nullptr;
 
 		T* ret = reinterpret_cast<T*>(&m_Buffer[m_Pos]);
-		m_Pos += sizeof(T);
+		m_Pos += (sizeof(T) * count);
 		return ret;
 	}
 
