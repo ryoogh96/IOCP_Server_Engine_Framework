@@ -20,61 +20,67 @@ void ClientPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 	}
 }
 
-struct BuffData
-{
-	uint64 buffId;
-	float remainTime;
-};
+#pragma pack(1)
 
-struct S_TEST
+// [ PKT_S_TEST ][BuffsListItem BuffsListItem BuffsListItem]
+struct PKT_S_TEST
 {
-	uint64 id;
-	uint32 hp;
-	uint16 attack;
-	// variable data
-	// 1) string (ex. name)
-	// 2) pure byte array (ex. guild image)
-	// 3) general list
-	vector<BuffData> buffs;
+	struct BuffsListItem
+	{
+		uint64 buffId;
+		float remainTime;
+	};
+
+	uint16 packetSize; // common header
+	uint16 packetId; // common header
+	uint64 id; // 8
+	uint32 hp; // 4
+	uint16 attack; // 2
+	uint16 buffsOffset;
+	uint16 buffsCount;
+
+	bool Validate()
+	{
+		uint32 size = 0;
+		size += sizeof(PKT_S_TEST);
+		size += buffsCount * sizeof(BuffsListItem);
+		if (size != packetSize)
+			return false;
+
+		if (buffsOffset + buffsCount * sizeof(BuffsListItem) > packetSize)
+			return false;
+
+		return true;
+	}
+	//vector<BuffData> buffs;
+	//wstring name;
 };
+#pragma pack()
 
 void ClientPacketHandler::Handle_S_TEST(BYTE* buffer, int32 len)
 {
 	BufferReader br(buffer, len);
 
-	PacketHeader header;
-	br >> header;
+	if (len < sizeof(PKT_S_TEST))
+		return;
 
-	uint64 id;
-	uint32 hp;
-	uint16 attack;
-	br >> id >> hp >> attack;
+	PKT_S_TEST pkt;
+	br >> pkt;
 
-	cout << "ID: " << id << " HP : " << hp << " ATT : " << attack << endl;
+	if (pkt.Validate() == false)
+		return;
 
-	vector<BuffData> buffs;
-	uint16 buffCount;
-	br >> buffCount;
+	//cout << "ID: " << id << " HP : " << hp << " ATT : " << attack << endl;
 
-	buffs.resize(buffCount);
-	for (int32 i = 0; i < buffCount; i++)
-	{
-		br >> buffs[i].buffId >> buffs[i].remainTime;
-	}
+	vector<PKT_S_TEST::BuffsListItem> buffs;
 
-	cout << "BufCount : " << buffCount << endl;
-	for (int32 i = 0; i < buffCount; i++)
+	buffs.resize(pkt.buffsCount);
+	for (int32 i = 0; i < pkt.buffsCount; i++)
+		br >> buffs[i];
+
+	cout << "BufCount : " << pkt.buffsCount << endl;
+	for (int32 i = 0; i < pkt.buffsCount; i++)
 	{
 		cout << "BufInfo : " << buffs[i].buffId << " " << buffs[i].remainTime << endl;
 	}
-
-	wstring name;
-	uint16 nameLen;
-	br >> nameLen;
-	name.resize(nameLen);
-
-	br.Read((void*)name.data(), nameLen * sizeof(WCHAR));
-
-	wcout.imbue(std::locale("kor"));
-	wcout << name << endl;
 }

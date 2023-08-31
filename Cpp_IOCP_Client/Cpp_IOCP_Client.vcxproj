@@ -173,6 +173,9 @@
     <ClInclude Include="ClientPacketHandler.hpp" />
     <ClInclude Include="pch.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="PDL.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
