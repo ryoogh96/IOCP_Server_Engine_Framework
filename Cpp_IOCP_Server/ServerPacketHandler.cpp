@@ -1,10 +1,5 @@
 #include "pch.hpp"
 #include "ServerPacketHandler.hpp"
-#include "Utility/BufferReader.hpp"
-#include "Utility/BufferWriter.hpp"
-
-using namespace std;
-using namespace Engine;
 
 void ServerPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 {
@@ -18,4 +13,9 @@ void ServerPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 	default:
 		break;
 	}
+}
+
+SendBufferRef ServerPacketHandler::MakeSendBuffer(Protocol::S_TEST& pkt)
+{
+	return _MakeSendBuffer(pkt, S_TEST);
 }
