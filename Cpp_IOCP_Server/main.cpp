@@ -7,6 +7,7 @@
 #include "Utility/BufferWriter.hpp"
 #include "ClientPacketHandler.hpp"
 #include "Protocol/Protocol.pb.h"
+#include "GameContents/Room.hpp"
 
 using namespace std;
 using namespace Engine;
@@ -15,6 +16,14 @@ int main()
 {
     Engine::MiniDump dump;
     dump.BeginDump();
+
+	{
+		HealJob healJob;
+		healJob.m_Target = 1;
+		healJob.m_HealValue = 10;
+
+		healJob.Execute();
+	}
 
 	ClientPacketHandler::Initialize();
 
@@ -35,6 +44,13 @@ int main()
 					service->GetIOCPManager()->Dispatch();
 				}
 			});
+	}
+
+
+	while (true)
+	{
+		GRoom.FlushJob();
+		this_thread::sleep_for(1ms);
 	}
 
 	Engine::GThreadManager->Join();

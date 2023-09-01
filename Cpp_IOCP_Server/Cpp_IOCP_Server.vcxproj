@@ -20,8 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientPacketHandler.cpp" />
+    <ClCompile Include="GameContents\Job.cpp" />
     <ClCompile Include="GameContents\Player.cpp" />
-    <ClCompile Include="GameContents\Room.cpp" />
+    <ClCompile Include="GameContents\Room.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="GameSessionManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -52,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientPacketHandler.hpp" />
+    <ClInclude Include="GameContents\Job.hpp" />
     <ClInclude Include="GameContents\Player.hpp" />
     <ClInclude Include="GameContents\Room.hpp" />
     <ClInclude Include="GameSession.hpp" />
