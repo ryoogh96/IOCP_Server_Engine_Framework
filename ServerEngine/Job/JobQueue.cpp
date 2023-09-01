@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "JobQueue.hpp"
+#include "Job/GlobalQueue.hpp"
 
 
 namespace Engine
@@ -12,7 +13,16 @@ namespace Engine
 		// the first thread which pushed Job will doing execute.
 		if (prevCount == 0)
 		{
-			Execute();
+			// if there is no executing JobQueue, then execute
+			if (LCurrentJobQueue == nullptr)
+			{
+				Execute();
+			}
+			else
+			{
+				// pass to another free threads to execute 
+				GGlobalQueue->Push(shared_from_this());
+			}
 		}
 	}
 
@@ -20,6 +30,8 @@ namespace Engine
 	// 2. what if DoAsync not finish forever. (all Jobs are only belong to single thread)
 	void JobQueue::Execute()
 	{
+		LCurrentJobQueue = this;
+
 		while (true)
 		{
 			Vector<JobRef> jobs;
@@ -32,7 +44,17 @@ namespace Engine
 			// if the remain job is zero, end execution.
 			if (m_JobCount.fetch_sub(jobCount) == jobCount)
 			{
+				LCurrentJobQueue = nullptr;
 				return;
+			}
+
+			const uint64 now = ::GetTickCount64();
+			if (now >= LEndTickCount)
+			{
+				LCurrentJobQueue = nullptr;
+				// pass to another free threads to execute 
+				GGlobalQueue->Push(shared_from_this());
+				break;
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "ThreadManager.hpp"
+#include "Job/GlobalQueue.hpp"
 
 namespace Engine
 {
@@ -45,5 +46,21 @@ namespace Engine
 	void ThreadManager::DestoryTLS()
 	{
 
+	}
+
+	void ThreadManager::DoGlobalQueueWork()
+	{
+		while (true)
+		{
+			uint64 now = ::GetTickCount64();
+			if (now > LEndTickCount)
+				break;
+
+			JobQueueRef jobQueue = GGlobalQueue->Pop();
+			if (jobQueue == nullptr)
+				break;
+
+			jobQueue->Execute();
+		}
 	}
 }

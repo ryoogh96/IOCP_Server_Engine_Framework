@@ -17,6 +17,8 @@ namespace Engine
 		static void InitTLS();
 		static void DestoryTLS();
 
+		static void DoGlobalQueueWork();
+
 	private:
 		Mutex						m_Lock;
 		std::vector<std::thread>	m_Threads;

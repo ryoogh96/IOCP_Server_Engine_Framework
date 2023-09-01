@@ -31,6 +31,7 @@ namespace Engine
 	USING_SHARED_PTR(ServerService);
 	USING_SHARED_PTR(ClientService);
 	USING_SHARED_PTR(Job);
+	USING_SHARED_PTR(JobQueue);
 
 	#define size16(value)	static_cast<int16>(sizeof(value))
 	#define size32(value)	static_cast<int32>(sizeof(value))

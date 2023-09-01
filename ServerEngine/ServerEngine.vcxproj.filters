@@ -129,6 +129,9 @@
     <ClInclude Include="Utility\LockJobQueue.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Job\GlobalQueue.hpp">
+      <Filter>Job</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="Utility\LockJobQueue.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\GlobalQueue.cpp">
+      <Filter>Job</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

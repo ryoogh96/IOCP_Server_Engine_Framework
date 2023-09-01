@@ -13,6 +13,25 @@
 using namespace std;
 using namespace Engine;
 
+enum
+{
+	WORKER_TICK = 64
+};
+
+void DoWorkerJob(ServerServiceRef& service)
+{
+	while (true)
+	{
+		LEndTickCount = ::GetTickCount64() + WORKER_TICK;
+
+		// process Network I/O -> to Ingame Logic (by Packet Handler)
+		service->GetIOCPManager()->Dispatch(10);
+
+		ThreadManager::DoGlobalQueueWork();
+	}
+}
+
+
 int main()
 {
 	ClientPacketHandler::Initialize();
@@ -35,6 +54,9 @@ int main()
 				}
 			});
 	}
+
+	// Main Thread
+	DoWorkerJob(service);
 
 	GThreadManager->Join();
 }

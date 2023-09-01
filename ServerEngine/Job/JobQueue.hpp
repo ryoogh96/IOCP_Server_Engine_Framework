@@ -19,16 +19,16 @@ namespace Engine
 			Push(ObjectPool<Job>::MakeShared(owner, memFunc, std::forward<Args>(args)...));
 		}
 
-		void				ClearJobs() { m_Jobs.Clear(); }
+		void					ClearJobs() { m_Jobs.Clear(); }
 
 	private:
-		void				Push(JobRef&& job);
-		void				Execute();
+		void					Push(JobRef&& job);
+
+	public:
+		void					Execute();
 
 	protected:
 		LockJobQueue<JobRef>	m_Jobs;
-		Atomic<int32>		m_JobCount = 0;
+		Atomic<int32>			m_JobCount = 0;
 	};
-
-
 }

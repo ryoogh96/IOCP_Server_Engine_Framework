@@ -6,7 +6,7 @@ namespace Engine
 	class LockJobQueue
 	{
 	public:
-		void Push(JobRef item)
+		void Push(T item)
 		{
 			WRITE_LOCK;
 			m_Items.push(item);
