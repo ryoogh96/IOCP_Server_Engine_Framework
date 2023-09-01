@@ -27,6 +27,7 @@ namespace Engine
 		virtual void	CloseService();
 		void			SetSessionFactory(SessionFactory sessionFactory) { m_SessionFactory = sessionFactory; }
 
+		void			Broadcast(SendBufferRef sendBuffer);
 		SessionRef		CreateSession();
 		void			AddSession(SessionRef session);
 		void			ReleaseSession(SessionRef session);

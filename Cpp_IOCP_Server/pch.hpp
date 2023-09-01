@@ -11,3 +11,7 @@
 #endif
 
 #include "Core/ServerEnginePCH.hpp"
+#include "Protocol/Enum.pb.h"
+
+using GameSessionRef = std::shared_ptr<class GameSession>;
+using PlayerRef = std::shared_ptr<class Player>;

@@ -20,6 +20,15 @@ namespace Engine
 
 	}
 
+	void Service::Broadcast(SendBufferRef sendBuffer)
+	{
+		WRITE_LOCK;
+		for (const auto& session : m_Sessions)
+		{
+			session->Send(sendBuffer);
+		}
+	}
+
 	SessionRef Service::CreateSession()
 	{
 		SessionRef session = m_SessionFactory();

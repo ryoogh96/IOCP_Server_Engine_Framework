@@ -5,7 +5,7 @@
 #include "Network/Service.hpp"
 #include "Network/Session.hpp"
 #include "Utility/BufferReader.hpp"
-#include "ClientPacketHandler.hpp"
+#include "ServerPacketHandler.hpp"
 
 using namespace Engine;
 
@@ -26,7 +26,10 @@ public:
 
 	virtual void OnRecvPacket(BYTE* buffer, int32 len) override
 	{
-		ClientPacketHandler::HandlePacket(buffer, len);
+		PacketSessionRef session = GetPacketSessionRef();
+		PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
+
+		ServerPacketHandler::HandlePacket(session, buffer, len);
 	}
 
 	virtual void OnSend(Engine::int32 len) override
@@ -64,6 +67,16 @@ int main()
 					service->GetIOCPManager()->Dispatch();
 				}
 			});
+	}
+
+	Protocol::C_CHAT chatPkt;
+	chatPkt.set_msg(u8"Hello World !");
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+
+	while (true)
+	{
+		service->Broadcast(sendBuffer);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	GThreadManager->Join();

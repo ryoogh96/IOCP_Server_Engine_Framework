@@ -5,10 +5,16 @@
     <ClCompile Include="pch.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="ClientPacketHandler.cpp" />
     <ClCompile Include="Protocol\Protocol.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="Protocol\Enum.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol\Struct.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">
@@ -22,9 +28,29 @@
     <ClInclude Include="pch.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="ClientPacketHandler.hpp" />
     <ClInclude Include="Protocol\Protocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
+    <ClInclude Include="Protocol\Enum.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol\Struct.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Protobuf\bin\GenPackets.bat">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Struct.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Enum.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Protocol.proto">
+      <Filter>Protocol</Filter>
+    </None>
   </ItemGroup>
 </Project>

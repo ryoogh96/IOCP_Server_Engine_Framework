@@ -7,6 +7,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{e9a6e7d4-0bd1-4c70-a3b1-b7b6305187c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents">
+      <UniqueIdentifier>{0a1d881d-698c-47b3-a5e0-391421f9a229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -15,9 +18,21 @@
     </ClCompile>
     <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="GameSessionManager.cpp" />
-    <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="Protocol\Protocol.pb.cc">
       <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol\Enum.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol\Struct.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientPacketHandler.cpp" />
+    <ClCompile Include="GameContents\Player.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContents\Room.cpp">
+      <Filter>GameContents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -26,9 +41,35 @@
     </ClInclude>
     <ClInclude Include="GameSession.hpp" />
     <ClInclude Include="GameSessionManager.hpp" />
-    <ClInclude Include="ServerPacketHandler.hpp" />
     <ClInclude Include="Protocol\Protocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
+    <ClInclude Include="Protocol\Enum.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol\Struct.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientPacketHandler.hpp" />
+    <ClInclude Include="GameContents\Player.hpp">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContents\Room.hpp">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Protobuf\bin\GenPackets.bat">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Struct.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Enum.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Protocol.proto">
+      <Filter>Protocol</Filter>
+    </None>
   </ItemGroup>
 </Project>

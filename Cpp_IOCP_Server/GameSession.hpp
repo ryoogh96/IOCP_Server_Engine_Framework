@@ -13,4 +13,7 @@ public:
 	virtual void OnDisconnected() override;
 	virtual void OnRecvPacket(BYTE* buffer, Engine::int32 len) override;
 	virtual void OnSend(Engine::int32 len) override;
+
+public:
+	Engine:: Vector<PlayerRef> m_Players;
 };
