@@ -1,29 +1,34 @@
 #pragma once
+#include "Job.hpp"
+#include "Utility/LockJobQueue.hpp"
 
 namespace Engine
 {
-	class JobQueue
+	class JobQueue : public std::enable_shared_from_this<JobQueue>
 	{
 	public:
-		void Push(JobRef job)
+		void DoAsync(CallbackType&& callback)
 		{
-			WRITE_LOCK;
-			m_Jobs.push(job);
+			Push(ObjectPool<Job>::MakeShared(std::move(callback)));
 		}
 
-		JobRef Pop()
+		template<typename T, typename Ret, typename... Args>
+		void DoAsync(Ret(T::* memFunc)(Args...), Args... args)
 		{
-			WRITE_LOCK;
-			if (m_Jobs.empty())
-				return nullptr;
-
-			JobRef ret = m_Jobs.front();
-			m_Jobs.pop();
-			return ret;
+			std::shared_ptr<T> owner = std::static_pointer_cast<T>(shared_from_this());
+			Push(ObjectPool<Job>::MakeShared(owner, memFunc, std::forward<Args>(args)...));
 		}
+
+		void				ClearJobs() { m_Jobs.Clear(); }
 
 	private:
-		USE_LOCK;
-		std::queue<JobRef> m_Jobs;
+		void				Push(JobRef&& job);
+		void				Execute();
+
+	protected:
+		LockJobQueue<JobRef>	m_Jobs;
+		Atomic<int32>		m_JobCount = 0;
 	};
+
+
 }

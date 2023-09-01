@@ -126,8 +126,8 @@
     <ClInclude Include="Job\JobQueue.hpp">
       <Filter>Job</Filter>
     </ClInclude>
-    <ClInclude Include="Job\JobSerializer.hpp">
-      <Filter>Job</Filter>
+    <ClInclude Include="Utility\LockJobQueue.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,8 +203,8 @@
     <ClCompile Include="Job\JobQueue.cpp">
       <Filter>Job</Filter>
     </ClCompile>
-    <ClCompile Include="Job\JobSerializer.cpp">
-      <Filter>Job</Filter>
+    <ClCompile Include="Utility\LockJobQueue.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

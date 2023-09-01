@@ -20,7 +20,7 @@ int main()
 	ServerServiceRef service = MakeShared<Engine::ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IOCPManager>(),
-		MakeShared<GameSession>, // TODO : SessionManager 등
+		MakeShared<GameSession>,
 		100);
 
 	ASSERT_CRASH(service->Start());
@@ -34,12 +34,6 @@ int main()
 					service->GetIOCPManager()->Dispatch();
 				}
 			});
-	}
-
-	while (true)
-	{
-		GRoom->FlushJob();
-		this_thread::sleep_for(1ms);
 	}
 
 	GThreadManager->Join();

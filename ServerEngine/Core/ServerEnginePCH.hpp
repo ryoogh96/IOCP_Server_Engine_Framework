@@ -76,4 +76,3 @@
 
 #include "Job/Job.hpp"
 #include "Job/JobQueue.hpp"
-#include "Job/JobSerializer.hpp"
