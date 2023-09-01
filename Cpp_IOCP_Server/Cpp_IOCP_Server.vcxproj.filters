@@ -34,9 +34,6 @@
     <ClCompile Include="GameContents\Room.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
-    <ClCompile Include="GameContents\Job.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -58,9 +55,6 @@
       <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="GameContents\Room.hpp">
-      <Filter>GameContents</Filter>
-    </ClInclude>
-    <ClInclude Include="GameContents\Job.hpp">
       <Filter>GameContents</Filter>
     </ClInclude>
   </ItemGroup>

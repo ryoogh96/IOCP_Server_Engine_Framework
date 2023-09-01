@@ -73,3 +73,7 @@
 #include "Utility/LockFreeQueue.hpp"
 #include "Utility/BufferReader.hpp"
 #include "Utility/BufferWriter.hpp"
+
+#include "Job/Job.hpp"
+#include "Job/JobQueue.hpp"
+#include "Job/JobSerializer.hpp"

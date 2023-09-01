@@ -16,6 +16,9 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{3e9d9661-1ccb-428b-a0c0-1fadcc140408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Job">
+      <UniqueIdentifier>{e20a2d85-df70-41a6-bcad-a9367ce39852}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -117,6 +120,15 @@
     <ClInclude Include="Utility\BufferWriter.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Job\Job.hpp">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Job\JobQueue.hpp">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Job\JobSerializer.hpp">
+      <Filter>Job</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -184,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="Utility\BufferWriter.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\JobQueue.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\JobSerializer.cpp">
+      <Filter>Job</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

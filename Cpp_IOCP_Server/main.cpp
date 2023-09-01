@@ -8,59 +8,18 @@
 #include "ClientPacketHandler.hpp"
 #include "Protocol/Protocol.pb.h"
 #include "GameContents/Room.hpp"
-#include "GameContents/Job.hpp"
+#include "Job/Job.hpp"
 
 using namespace std;
 using namespace Engine;
 
-void HealByValue(int64 target, int32 value)
-{
-	cout << target << "gives " << value << " heals" << endl;
-}
-
-class Knight
-{
-public:
-	void HealMe(int32 value)
-	{
-		cout << "HealMe! " << value << endl;
-	}
-};
-
 int main()
 {
-    Engine::MiniDump dump;
-    dump.BeginDump();
-
-	auto tup = std::tuple<int32, int32>(1, 2);
-	auto val0 = std::get<0>(tup);
-	auto val1 = std::get<1>(tup);
-
-	auto s = gen_seq<3>();
-	// gen_seq<3>
-	// : gen_seq<2, 2>
-	// : gen_seq<1, 1, 2>
-	// : gen_seq<0, 0, 1, 2>
-	// : seq<0, 1, 2>
-
-	// TEST JOB
-	{
-		FuncJob<void, int64, int32> job(HealByValue, 100, 10);
-		job.Execute();
-	}
-	{
-		Knight k1;
-		MemberJob job2(&k1, &Knight::HealMe, 10);
-		job2.Execute();
-	}
-
-	// JOB
-
 	ClientPacketHandler::Initialize();
 
 	ServerServiceRef service = MakeShared<Engine::ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
-		MakeShared<Engine::IOCPManager>(),
+		MakeShared<IOCPManager>(),
 		MakeShared<GameSession>, // TODO : SessionManager 등
 		100);
 
@@ -79,7 +38,7 @@ int main()
 
 	while (true)
 	{
-		GRoom.FlushJob();
+		GRoom->FlushJob();
 		this_thread::sleep_for(1ms);
 	}
 
