@@ -76,3 +76,7 @@
 
 #include "Job/Job.hpp"
 #include "Job/JobQueue.hpp"
+
+#include "XML/XmlParser.hpp"
+
+#include "ConsoleLog/ConsoleLog.hpp"

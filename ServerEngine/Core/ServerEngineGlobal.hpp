@@ -10,4 +10,5 @@ namespace Engine
 
 	extern class DeadLockProfiler* GDeadLockProfiler;
 	extern class DBConnectionPool* GDBConnectionPool;
+	extern class ConsoleLog* GConsoleLogger;
 }

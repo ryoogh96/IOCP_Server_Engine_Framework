@@ -4,6 +4,7 @@
 #include "Job/GlobalQueue.hpp"
 #include "Job/JobTimer.hpp"
 #include "DB/DBConnectionPool.hpp"
+#include "ConsoleLog/ConsoleLog.hpp"
 
 namespace Engine
 {
@@ -15,6 +16,7 @@ namespace Engine
 
 	DeadLockProfiler*	GDeadLockProfiler = nullptr;
 	DBConnectionPool* GDBConnectionPool = nullptr;
+	ConsoleLog* GConsoleLogger = nullptr;
 
 	class ServerEngineGlobal
 	{
@@ -28,6 +30,7 @@ namespace Engine
 			GJobTimer = new JobTimer();
 			GDeadLockProfiler = new DeadLockProfiler();
 			GDBConnectionPool = new DBConnectionPool();
+			GConsoleLogger = new ConsoleLog();
 			SocketManager::Initialize();
 		}
 
@@ -40,6 +43,7 @@ namespace Engine
 			delete GJobTimer;
 			delete GDeadLockProfiler;
 			delete GDBConnectionPool;
+			delete GConsoleLogger;
 			SocketManager::Clear();
 		}
 	} GServerEngineGlobal;

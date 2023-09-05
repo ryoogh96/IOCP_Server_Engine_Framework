@@ -171,6 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleLog\ConsoleLog.hpp" />
     <ClInclude Include="Core\ServerEngineGlobal.hpp" />
     <ClInclude Include="Core\ServerEngineMacro.hpp" />
     <ClInclude Include="Core\ServerEnginePCH.hpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="XML\XmlParser.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleLog\ConsoleLog.cpp" />
     <ClCompile Include="Core\ServerEngineGlobal.cpp" />
     <ClCompile Include="Core\ServerEnginePCH.cpp" />
     <ClCompile Include="Core\ServerEngineTLS.cpp" />

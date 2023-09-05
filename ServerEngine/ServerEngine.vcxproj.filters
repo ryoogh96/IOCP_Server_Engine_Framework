@@ -25,6 +25,9 @@
     <Filter Include="XML">
       <UniqueIdentifier>{af5f81ec-df57-471e-98f4-fa5ccaa8ab01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ConsoleLog">
+      <UniqueIdentifier>{680767be-cb14-4d2f-b3e2-1bf5f377de3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -168,6 +171,9 @@
     <ClInclude Include="XML\XmlParser.hpp">
       <Filter>XML</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleLog\ConsoleLog.hpp">
+      <Filter>ConsoleLog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -265,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="XML\XmlParser.cpp">
       <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleLog\ConsoleLog.cpp">
+      <Filter>ConsoleLog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
