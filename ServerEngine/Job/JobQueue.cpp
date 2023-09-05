@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	void JobQueue::Push(JobRef&& job)
+	void JobQueue::Push(JobRef job, bool pushOnly)
 	{
 		const int32 prevCount = m_JobCount.fetch_add(1);
 		m_Jobs.Push(job); // WRITE_LOCK
@@ -14,7 +14,7 @@ namespace Engine
 		if (prevCount == 0)
 		{
 			// if there is no executing JobQueue, then execute
-			if (LCurrentJobQueue == nullptr)
+			if (LCurrentJobQueue == nullptr && pushOnly == false)
 			{
 				Execute();
 			}

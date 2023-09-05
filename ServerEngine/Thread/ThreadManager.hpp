@@ -18,6 +18,7 @@ namespace Engine
 		static void DestoryTLS();
 
 		static void DoGlobalQueueWork();
+		static void DistributeReservedJobs();
 
 	private:
 		Mutex						m_Lock;

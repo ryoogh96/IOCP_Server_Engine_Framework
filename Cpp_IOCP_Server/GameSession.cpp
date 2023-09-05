@@ -2,6 +2,7 @@
 #include "GameSession.hpp"
 #include "GameSessionManager.hpp"
 #include "ClientPacketHandler.hpp"
+#include "GameContents/Room.hpp"
 
 void GameSession::OnConnected()
 {
@@ -11,6 +12,15 @@ void GameSession::OnConnected()
 void GameSession::OnDisconnected()
 {
 	GSessionManager.Remove(std::static_pointer_cast<GameSession>(shared_from_this()));
+
+	if (m_CurrentPlayer)
+	{
+		if (auto room = m_Room.lock())
+			room->DoAsync(&Room::Leave, m_CurrentPlayer);
+	}
+
+	m_CurrentPlayer = nullptr;
+	m_Players.clear();
 }
 
 void GameSession::OnRecvPacket(BYTE* buffer, Engine::int32 len)

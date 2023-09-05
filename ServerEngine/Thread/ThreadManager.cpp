@@ -1,5 +1,7 @@
 #include "pch.hpp"
 #include "ThreadManager.hpp"
+#include "Core/ServerEngineTLS.hpp"
+#include "Core/ServerEngineGlobal.hpp"
 #include "Job/GlobalQueue.hpp"
 
 namespace Engine
@@ -62,5 +64,12 @@ namespace Engine
 
 			jobQueue->Execute();
 		}
+	}
+
+	void ThreadManager::DistributeReservedJobs()
+	{
+		const uint64 now = ::GetTickCount64();
+
+		GJobTimer->Distribute(now);
 	}
 }

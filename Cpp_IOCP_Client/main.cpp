@@ -54,7 +54,7 @@ int main()
 		Engine::NetAddress(L"127.0.0.1", 7777),
 		Engine::MakeShared<Engine::IOCPManager>(),
 		Engine::MakeShared<ServerSession>,
-		1000);
+		1);
 
 	ASSERT_CRASH(service->Start());
 

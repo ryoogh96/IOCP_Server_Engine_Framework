@@ -16,4 +16,7 @@ public:
 
 public:
 	Engine:: Vector<PlayerRef> m_Players;
+
+	PlayerRef m_CurrentPlayer;
+	std::weak_ptr<class Room> m_Room;
 };

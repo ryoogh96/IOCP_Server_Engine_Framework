@@ -179,6 +179,7 @@
     <ClInclude Include="Job\GlobalQueue.hpp" />
     <ClInclude Include="Job\Job.hpp" />
     <ClInclude Include="Job\JobQueue.hpp" />
+    <ClInclude Include="Job\JobTimer.hpp" />
     <ClInclude Include="Memory\Allocator.hpp" />
     <ClInclude Include="Memory\Container.hpp" />
     <ClInclude Include="Memory\Memory.hpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Job\GlobalQueue.cpp" />
     <ClCompile Include="Job\Job.cpp" />
     <ClCompile Include="Job\JobQueue.cpp" />
+    <ClCompile Include="Job\JobTimer.cpp" />
     <ClCompile Include="Memory\Allocator.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Memory\MemoryPool.cpp" />
