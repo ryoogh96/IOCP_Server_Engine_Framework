@@ -10,14 +10,18 @@
     <Filter Include="GameContents">
       <UniqueIdentifier>{0a1d881d-698c-47b3-a5e0-391421f9a229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{b2d10271-a127-4957-9d46-2d23fd6890b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\DB">
+      <UniqueIdentifier>{5e0adb45-824a-457c-9d04-ed755668bc6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="GameSession.cpp" />
-    <ClCompile Include="GameSessionManager.cpp" />
     <ClCompile Include="Protocol\Protocol.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
@@ -27,20 +31,26 @@
     <ClCompile Include="Protocol\Struct.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
-    <ClCompile Include="ClientPacketHandler.cpp" />
     <ClCompile Include="GameContents\Player.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
     <ClCompile Include="GameContents\Room.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
+    <ClCompile Include="Main\ClientPacketHandler.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\GameSession.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\GameSessionManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GameSession.hpp" />
-    <ClInclude Include="GameSessionManager.hpp" />
     <ClInclude Include="Protocol\Protocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
@@ -50,12 +60,20 @@
     <ClInclude Include="Protocol\Struct.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="ClientPacketHandler.hpp" />
     <ClInclude Include="GameContents\Player.hpp">
       <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="GameContents\Room.hpp">
       <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\ClientPacketHandler.hpp">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\GameSession.hpp">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\GameSessionManager.hpp">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,5 +89,10 @@
     <None Include="..\Common\Protobuf\bin\Protocol.proto">
       <Filter>Protocol</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Main\DB\GameDB.xml">
+      <Filter>Main\DB</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

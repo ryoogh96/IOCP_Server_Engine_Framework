@@ -206,12 +206,18 @@
     <ClInclude Include="Thread\ThreadManager.hpp" />
     <ClInclude Include="Utility\BufferReader.hpp" />
     <ClInclude Include="Utility\BufferWriter.hpp" />
+    <ClInclude Include="Utility\FileUtils.hpp" />
     <ClInclude Include="Utility\LockFreeQueue.hpp" />
     <ClInclude Include="Utility\LockFreeStack.hpp" />
     <ClInclude Include="Utility\LockJobQueue.hpp" />
     <ClInclude Include="Utility\LockQueue.hpp" />
     <ClInclude Include="Utility\LockStack.hpp" />
     <ClInclude Include="Utility\MiniDump.hpp" />
+    <ClInclude Include="XML\rapidxml.hpp" />
+    <ClInclude Include="XML\rapidxml_iterators.hpp" />
+    <ClInclude Include="XML\rapidxml_print.hpp" />
+    <ClInclude Include="XML\rapidxml_utils.hpp" />
+    <ClInclude Include="XML\XmlParser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\ServerEngineGlobal.cpp" />
@@ -247,8 +253,10 @@
     <ClCompile Include="Thread\ThreadManager.cpp" />
     <ClCompile Include="Utility\BufferReader.cpp" />
     <ClCompile Include="Utility\BufferWriter.cpp" />
+    <ClCompile Include="Utility\FileUtils.cpp" />
     <ClCompile Include="Utility\LockJobQueue.cpp" />
     <ClCompile Include="Utility\MiniDump.cpp" />
+    <ClCompile Include="XML\XmlParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

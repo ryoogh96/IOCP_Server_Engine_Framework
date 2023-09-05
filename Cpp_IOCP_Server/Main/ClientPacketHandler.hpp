@@ -1,5 +1,5 @@
 #pragma once
-#include "Protocol/Protocol.pb.h"
+#include "../Protocol/Protocol.pb.h"
 
 using namespace Engine;
 

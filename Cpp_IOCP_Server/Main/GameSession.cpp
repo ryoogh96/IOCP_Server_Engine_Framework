@@ -2,7 +2,7 @@
 #include "GameSession.hpp"
 #include "GameSessionManager.hpp"
 #include "ClientPacketHandler.hpp"
-#include "GameContents/Room.hpp"
+#include "../GameContents/Room.hpp"
 
 void GameSession::OnConnected()
 {

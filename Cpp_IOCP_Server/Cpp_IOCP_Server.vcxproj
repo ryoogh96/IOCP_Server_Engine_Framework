@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientPacketHandler.cpp" />
     <ClCompile Include="GameContents\Player.cpp" />
     <ClCompile Include="GameContents\Room.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -27,9 +26,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GameSession.cpp" />
-    <ClCompile Include="GameSessionManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main\ClientPacketHandler.cpp" />
+    <ClCompile Include="Main\GameSession.cpp" />
+    <ClCompile Include="Main\GameSessionManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -56,11 +56,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientPacketHandler.hpp" />
     <ClInclude Include="GameContents\Player.hpp" />
     <ClInclude Include="GameContents\Room.hpp" />
-    <ClInclude Include="GameSession.hpp" />
-    <ClInclude Include="GameSessionManager.hpp" />
+    <ClInclude Include="Main\ClientPacketHandler.hpp" />
+    <ClInclude Include="Main\GameSession.hpp" />
+    <ClInclude Include="Main\GameSessionManager.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="Protocol\Enum.pb.h" />
     <ClInclude Include="Protocol\Protocol.pb.h" />
@@ -71,6 +71,9 @@
     <None Include="..\Common\Protobuf\bin\GenPackets.bat" />
     <None Include="..\Common\Protobuf\bin\Protocol.proto" />
     <None Include="..\Common\Protobuf\bin\Struct.proto" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Main\DB\GameDB.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

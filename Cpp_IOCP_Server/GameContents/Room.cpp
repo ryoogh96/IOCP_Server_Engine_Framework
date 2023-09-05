@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "Room.hpp"
 #include "Player.hpp"
-#include "../GameSession.hpp"
+#include "../Main/GameSession.hpp"
 
 std::shared_ptr<Room> GRoom = make_shared<Room>();
 

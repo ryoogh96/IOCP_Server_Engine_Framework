@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "ClientPacketHandler.hpp"
-#include "GameContents/Player.hpp"
-#include "GameContents/Room.hpp"
+#include "../GameContents/Player.hpp"
+#include "../GameContents/Room.hpp"
 #include "GameSession.hpp"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
