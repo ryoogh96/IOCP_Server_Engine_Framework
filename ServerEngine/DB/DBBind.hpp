@@ -101,7 +101,7 @@ namespace Engine
 		DBConnection& m_DBConnection;
 		const WCHAR* _query;
 		SQLLEN			m_ParamIndex[ParamCount > 0 ? ParamCount : 1];
-		SQLLEN			m_ColumnIndex[ParamCount > 0 ? ParamCount : 1];
+		SQLLEN			m_ColumnIndex[ColumnCount > 0 ? ColumnCount : 1];
 		uint64			m_ParamFlag;
 		uint64			m_ColumnFlag;
 	};
