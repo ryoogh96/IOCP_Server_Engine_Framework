@@ -26,10 +26,6 @@ namespace Engine
 		JobData* jobData = nullptr;
 	};
 
-	/*--------------
-		JobTimer
-	---------------*/
-
 	class JobTimer
 	{
 	public:

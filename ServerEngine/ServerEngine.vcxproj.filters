@@ -19,6 +19,9 @@
     <Filter Include="Job">
       <UniqueIdentifier>{e20a2d85-df70-41a6-bcad-a9367ce39852}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{7fb78038-3483-404e-9580-2d2c95d8e3ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -135,6 +138,12 @@
     <ClInclude Include="Job\JobTimer.hpp">
       <Filter>Job</Filter>
     </ClInclude>
+    <ClInclude Include="DB\DBConnection.hpp">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBConnectionPool.hpp">
+      <Filter>DB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -217,6 +226,12 @@
     </ClCompile>
     <ClCompile Include="Job\JobTimer.cpp">
       <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnection.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnectionPool.cpp">
+      <Filter>DB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

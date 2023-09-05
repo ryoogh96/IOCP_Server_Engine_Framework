@@ -176,6 +176,8 @@
     <ClInclude Include="Core\ServerEnginePCH.hpp" />
     <ClInclude Include="Core\ServerEngineTLS.hpp" />
     <ClInclude Include="Core\ServerEngineTypes.hpp" />
+    <ClInclude Include="DB\DBConnection.hpp" />
+    <ClInclude Include="DB\DBConnectionPool.hpp" />
     <ClInclude Include="Job\GlobalQueue.hpp" />
     <ClInclude Include="Job\Job.hpp" />
     <ClInclude Include="Job\JobQueue.hpp" />
@@ -214,6 +216,8 @@
     <ClCompile Include="Core\ServerEngineGlobal.cpp" />
     <ClCompile Include="Core\ServerEnginePCH.cpp" />
     <ClCompile Include="Core\ServerEngineTLS.cpp" />
+    <ClCompile Include="DB\DBConnection.cpp" />
+    <ClCompile Include="DB\DBConnectionPool.cpp" />
     <ClCompile Include="Job\GlobalQueue.cpp" />
     <ClCompile Include="Job\Job.cpp" />
     <ClCompile Include="Job\JobQueue.cpp" />
