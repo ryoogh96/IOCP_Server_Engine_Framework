@@ -174,6 +174,12 @@
     <ClInclude Include="ConsoleLog\ConsoleLog.hpp">
       <Filter>ConsoleLog</Filter>
     </ClInclude>
+    <ClInclude Include="DB\DBModel.hpp">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBSynchronizer.hpp">
+      <Filter>DB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -274,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="ConsoleLog\ConsoleLog.cpp">
       <Filter>ConsoleLog</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBModel.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBSynchronizer.cpp">
+      <Filter>DB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

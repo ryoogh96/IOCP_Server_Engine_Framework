@@ -180,6 +180,8 @@
     <ClInclude Include="DB\DBBind.hpp" />
     <ClInclude Include="DB\DBConnection.hpp" />
     <ClInclude Include="DB\DBConnectionPool.hpp" />
+    <ClInclude Include="DB\DBModel.hpp" />
+    <ClInclude Include="DB\DBSynchronizer.hpp" />
     <ClInclude Include="Job\GlobalQueue.hpp" />
     <ClInclude Include="Job\Job.hpp" />
     <ClInclude Include="Job\JobQueue.hpp" />
@@ -228,6 +230,8 @@
     <ClCompile Include="DB\DBBind.cpp" />
     <ClCompile Include="DB\DBConnection.cpp" />
     <ClCompile Include="DB\DBConnectionPool.cpp" />
+    <ClCompile Include="DB\DBModel.cpp" />
+    <ClCompile Include="DB\DBSynchronizer.cpp" />
     <ClCompile Include="Job\GlobalQueue.cpp" />
     <ClCompile Include="Job\Job.cpp" />
     <ClCompile Include="Job\JobQueue.cpp" />
